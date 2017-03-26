@@ -27,15 +27,8 @@ source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/utils"
 
-function show_new_script_usage() {
-  show_version
-  echo "usages: "
-  echo "  ${app} new script name=mvn action=rebuild cli="'"'"mvn clean package -Dbuild=dev -Dmaven.test.skip=true"'"'"  "
-}
 
-#log_info "${HI_CLI_HOME}/modules/${module}/${action}"
-
-function create_new_script() {
+function create_new_config() {
 
 cat > "$1" <<_EOF_
 #!/bin/bash
@@ -58,38 +51,39 @@ cat > "$1" <<_EOF_
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author: John Deng (john.deng@outlook.com)
+# Author: $(whoami)
 # Updated: $(date)
-# Module: ${module}
 ###############################################################################
 
-${cli}
+# TODO: added your config below
+
+
 _EOF_
 }
 
 function run() {
-  log_debug "========== new ==============="
   result=1
-  if [ "${module}" != "" ]; then
-    script_file=""${HI_CLI_HOME}/modules/${module}/config""
+  if [ "${arg3}" != "" ]; then
+    new_workspace="${PWD}/${arg3}"
+    log_debug "new_workspace: ${new_workspace}"
+    
+    if [ ! -d "${new_workspace}" ]; then
 
-    log_debug "${script_file}"
+      mkdir -p "${new_workspace}"
 
-    get_dir_from_path new_module_dir "${script_file}"
-    if [ -f "${script_file}" ]; then
-      mkdir -p "${new_module_dir}"
-      if prompt_yesorno "The module ${script_file} is already exist, do you wish to overwrie it? [yes/no]"; then
-        create_new_script "${script_file}"
-        result=$?
-      else
-        exit
-      fi
+      pushd "${new_workspace}" > /dev/null
+
+      create_new_config "${new_workspace}/hi.conf"
+
+      popd > /dev/null
     else
-      create_new_script "${script_file}"
-      result=$?
+      log_warn "${new_workspace} is already exist!"
     fi
+
   fi
 
-  eval  $1="\${result}"
-  eval  $2="\${cli}"
+  result=$?
+
+  eval  $1='"$result"' 
+  eval  $2='"$cli"' 
 }

@@ -5,6 +5,13 @@ export DEVICE_PATH=$DEVICE_PATH
 export OS=`uname`
 export OS=${OS%_*}
 
+function import() {
+  if [ -f "$1" ];
+  then
+    source "$1"
+  fi
+}
+
 function get_linux_distro() {
     distro='unkown'
     id_like=$(cat /etc/*-release | grep ID_LIKE)

@@ -30,14 +30,14 @@ source "${HI_CLI_HOME}/bin/utils"
 function show_new_script_usage() {
   show_version
   echo "usages: "
-  echo "  ${app} new script name=mvn action=rebuild cli="'"'"mvn clean package -Dbuild=dev -Dmaven.test.skip=true"'"'"  "
+  echo "  ${app} new script name=mvn command=rebuild cli="'"'"mvn clean package -Dbuild=dev -Dmaven.test.skip=true"'"'"  "
 }
 
-#log_info "${HI_CLI_HOME}/modules/${module}/${action}"
-
 function create_new_script() {
+  log_debug "create_new_script"
 
-echo "#!/bin/bash
+  cat > "$1" <<_EOF_
+#!/bin/bash
 ###############################################################################
 # Project: hi-cli
 # Description: The cross platform development toolkit - hi-cli
@@ -59,18 +59,19 @@ echo "#!/bin/bash
 #
 # Author: John Deng (john.deng@outlook.com)
 # Updated: $(date)
-# module: ${module}
-# Action: ${action}
+# Module: ${module}
+# Submodule: ${submodule}
+# Command: ${command}
 ###############################################################################
 
-source \"${HI_CLI_HOME}/bin/colors"
-source \${HI_CLI_HOME}/bin/clap
-source \${HI_CLI_HOME}/bin/logging
+source "\${HI_CLI_HOME}/bin/colors"
+source "\${HI_CLI_HOME}/bin/clap"
+source "\${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function run() {
-  cli="'"'"${cli}"'"'"
+  cli="${cli}"
 
-  ${cli}
+  \${cli}
 
   result=\$?
 
@@ -79,27 +80,37 @@ function run() {
 }
 
 ###############################################################################
-
-" > ${HI_CLI_HOME}/modules/${module}/${action}
+_EOF_
 
 }
 
 function run() {
   log_debug "========== new ==============="
   result=1
-  if [ "${action}" != "filter" ]; then
-    script_file=${HI_CLI_HOME}/modules/${module}/${action}
+  if [ "${command}" != "" ]; then
 
-    mkdir -p ${HI_CLI_HOME}/modules/${module}
+    script_file=${HI_CLI_HOME}/modules/${module}/${command}
+    if [ "${submodule}" != "" ]; then
+      script_file=${HI_CLI_HOME}/modules/${module}/${submodule}/${command}
+    fi
+    if [ "${default}" == "default" ];
+    then
+      script_file=${script_file/modules/bin}
+    fi
+
+    log_debug "${script_file}"
+    
+    get_dir_from_path new_module_dir "${script_file}"
+    mkdir -p "${new_module_dir}"
 
     if [ -f "${script_file}" ]; then
-      if prompt_yesorno "The module $script_file is already exist, do you wish to overwrie it? [yes/no]"; then
-        create_new_script
+      if prompt_yesorno "The module ${script_file} is already exist, do you wish to overwrie it? [yes/no]"; then
+        create_new_script "${script_file}"
       else
         exit
       fi
     else
-      create_new_script 
+      create_new_script "${script_file}"
       # create link to $(brew --prefix)/etc/bash_completion.d for mac or /etc/bash_completion.d for linux 
     fi
   fi

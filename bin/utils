@@ -68,3 +68,35 @@ function get_dir_from_path() {
   src="$2"
   eval $1="\${src%/*}"
 }
+
+function is_function() {
+
+  if [ $(type "$1" | grep "function" | wc -l) != 0 ]; then
+    echo "yes"
+  else
+    echo "no"
+  fi
+
+}
+
+function format_disk() {
+
+storage=$1
+
+fdisk ${storage} <<EOF
+d
+
+n
+p
+1
+
+
+
+t
+8e
+
+w
+EOF
+
+}
+

@@ -32,7 +32,7 @@ if [ "${HI_CLI_HOME}" == "" ]; then
 fi
 
 module_name=$1
-module_action=$2
+submodule_name=$2
 
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
@@ -62,7 +62,7 @@ app="hi"
 log_info "Running: ${CMD_LINE}"
 
 function main() {
-  custom_module="${HI_CLI_HOME}/modules/${module_name}/${module_action}"
+  custom_module="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}"
   module_cmd=${CMD_LINE}
   if [ -f "${custom_module}" ]; then
     module_cmd=${module_cmd/-all/}

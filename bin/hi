@@ -32,8 +32,13 @@ if [ "${HI_CLI_HOME}" == "" ]; then
 fi
 
 module_name=$1
-module_action=$2
-module_sub_action=$3
+submodule_name=$2
+command_name=$3
+arg1=$1
+arg2=$2
+arg3=$3
+arg4=$4
+arg5=$5
 
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
@@ -41,17 +46,22 @@ source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
 source "${HI_CLI_HOME}/bin/usage"
 source "${HI_CLI_HOME}/bin/utils"
+source "${HI_CLI_HOME}/bin/init"
 
 app="hi"
 
 #log_info "Running: ${CMD_LINE}"
 
 function main() {
-  default_module="${HI_CLI_HOME}/bin/${module_name}/${module_action}"
-  module_path="${HI_CLI_HOME}/modules/${module_name}/${module_action}"
-  if [ "${module_sub_action}" != "" ]; 
+
+  import "${HI_CLI_HOME}/bin/${module_name}/init"
+
+  default_module="${HI_CLI_HOME}/bin/${module_name}/${submodule_name}"
+
+  module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}"
+  if [ "${command_name}" != "" ]; 
   then
-    sub_module_path="${HI_CLI_HOME}/modules/${module_name}/${module_action}/${module_sub_action}"
+    sub_module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}/${command_name}"
     if [ -f "${sub_module_path}" ]; 
     then
       module_path="${sub_module_path}"
@@ -65,29 +75,42 @@ function main() {
   get_file_from_path module_command "${module_path}"
   export module_command
 
+  if [ -f "${PWD}/hi.conf" ];
+  then
+    log_debug "${PWD}/hi.conf"
+    source "${PWD}/hi.conf"
+  fi
+
   if [ -f "${module_dir}/config" ];
   then
+    log_debug "${module_dir}/config"
     source "${module_dir}/config"
   fi
 
   if [ -f "${module_dir}/init" ];
   then
+    log_debug "${module_dir}/init"
     source "${module_dir}/init"
   fi
-  
+
   if [ -f "${default_module}" ]; then
-    echo "default_module: $default_module"
+    log_debug "default_module: ${default_module}"
     source "${default_module}"
   elif [ -f "${module_path}" ]; then
+    log_debug "default_module: ${module_path}"
     source "${module_path}"
-  else
-    show_hi_usage
-    exit
   fi
 
   result=0
-  cli=${cli}
-  run result cli
+  log_debug "is run a function: $(is_function run)"
+  if [ "$(is_function run)" == "yes" ];
+  then
+    cli=${cli}
+    run result cli
+  else
+    show_hi_usage
+    exit  
+  fi
 
   if [ ${result} == 0 ]; then
     log_info "${cli} : success"
