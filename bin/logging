@@ -1,0 +1,63 @@
+#!/bin/bash
+###############################################################################
+# Project: hi-cli
+# Description: The cross platform development toolkit - hi-cli
+# Author: John Deng (john.deng@outlook.com)
+#
+# Copyright (c) 2014-2017 John Deng (john.deng@outlook.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: John Deng (john.deng@outlook.com)
+# Updated: 2017-02-11
+###############################################################################
+
+source "${HI_CLI_HOME}/bin/init"
+source "${HI_CLI_HOME}/bin/colors"
+
+function log_debug() {
+	if [ "${debug}" == "debug" ]; 
+	then
+		${ECHO_E} "${TEAL}[hi-cli] [LINE: ${BASH_LINENO[*]}] $1 ${ENDCOLOR}"	
+	fi
+}
+
+function log_base()
+{
+	${ECHO_E} "$2[hi-cli] $1 ${ENDCOLOR}"
+}
+
+function log_info()
+{
+	log_base "$1" "${GREEN}"
+}
+
+function log_trace()
+{
+	log_base "$1" "${TEAL}"
+}
+
+function log_warn()
+{
+	log_base "$1" "${YELLOW}"
+}
+
+function log_error()
+{
+	if [ "$2" == "no-debug" ]; then
+	  log_base "$1" "${RED}"
+	else
+	  log_base "[LINE: ${BASH_LINENO[*]}] $1" "${RED}"
+	fi
+}
+

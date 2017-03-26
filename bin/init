@@ -1,0 +1,26 @@
+#!/bin/bash
+
+export LANG=C.UTF-8
+export DEVICE_PATH=$DEVICE_PATH
+export OS=`uname`
+export OS=${OS%_*}
+
+function get_linux_distro() {
+    distro='unkown'
+    id_like=$(cat /etc/*-release | grep ID_LIKE)
+
+    if [ $(echo "${id_like}" | grep debian | wc -l) != 0 ]; then
+      distro='debian'
+    elif [ $(echo "${id_like}" | grep rhel | wc -l) != 0 ] || [ $(echo "${id_like}" | grep fedora | wc -l) != 0 ]; then  
+      distro='rhel'
+    fi
+
+    eval " $1="'"'"$distro"'"'" "
+}
+
+if [ "{OS}" == "Linux" ]; then
+  get_linux_distro LINUX_DISTRO
+  export LINUX_DISTRO
+fi
+
+

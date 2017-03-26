@@ -1,0 +1,79 @@
+#!/bin/bash
+###############################################################################
+# Project: hi-cli
+# Description: The cross platform development toolkit - hi-cli
+# Author: John Deng (john.deng@outlook.com)
+#
+# Copyright (c) 2014-2017 John Deng (john.deng@outlook.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: John Deng (john.deng@outlook.com)
+# Updated: 2017-02-11
+###############################################################################
+echo "$0 $@"
+###############################################################################
+# Show version
+function showInstallErrorMessage()
+{
+    if [ $? != 0 ]; then
+        echo -e "Installing hi-cli failed!"
+        exit
+    fi
+}
+
+###############################################################################
+$DEP_INSTALL_CMD
+
+ETC_PROFILE=/etc/profile
+
+# remove if found hi-cli environment variables
+if [ $(cat $ETC_PROFILE | grep "\#hi-cli-begin" | wc -l) != 0 ]; then
+    #echo "replace ..."
+    sed -n ":b
+$ !{
+   N
+   b b
+   }
+$ {
+   s|\(\n\#hi-cli-begin\).*\(\n\)\([[:blank:]]*\)\(\#hi-cli-end\)|${REPLACEWITH}|
+   p
+   }" $ETC_PROFILE > /tmp/.profile
+   showInstallErrorMessage
+
+   mv /tmp/.profile $ETC_PROFILE
+   showInstallErrorMessage
+fi
+
+#echo "append ..."
+
+HI_CLI_HOME="${PWD}"
+HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
+if [ "${HI_CLI_BIN}" == "bin" ]; then
+  HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
+fi
+echo  HI_CLI_HOME: "${HI_CLI_HOME}"
+
+echo "#hi-cli-begin
+export HI_CLI_HOME="${HI_CLI_HOME}"
+export PATH="\${HI_CLI_HOME}/bin":\$PATH
+#hi-cli-end" >> ${ETC_PROFILE}
+
+#source ${ETC_PROFILE}
+showInstallErrorMessage
+
+echo -e "
+Installed ${HI_CLI_NAME} successfully!
+"
+
+###############################################################################

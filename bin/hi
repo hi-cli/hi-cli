@@ -1,0 +1,101 @@
+#!/bin/bash
+###############################################################################
+# Project: hi-cli
+# Description: The cross platform development toolkit - hi-cli
+# Author: John Deng (john.deng@outlook.com)
+#
+# Copyright (c) 2014-2017 John Deng (john.deng@outlook.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: John Deng (john.deng@outlook.com)
+# Updated: 2017-02-11
+###############################################################################
+
+if [ "${HI_CLI_HOME}" == "" ]; then
+  echo ""
+  echo "Warning:"
+  echo "Please install hi-cli first!"
+  echo "cd /path/to/hi-cli/bin"
+  echo "./install"
+  exit
+fi
+
+module_name=$1
+module_action=$2
+module_sub_action=$3
+
+source "${HI_CLI_HOME}/bin/colors"
+source "${HI_CLI_HOME}/bin/clap"
+source "${HI_CLI_HOME}/bin/logging"
+source "${HI_CLI_HOME}/bin/version"
+source "${HI_CLI_HOME}/bin/usage"
+source "${HI_CLI_HOME}/bin/utils"
+
+app="hi"
+
+#log_info "Running: ${CMD_LINE}"
+
+function main() {
+  default_module="${HI_CLI_HOME}/bin/${module_name}/${module_action}"
+  module_path="${HI_CLI_HOME}/modules/${module_name}/${module_action}"
+  if [ "${module_sub_action}" != "" ]; 
+  then
+    sub_module_path="${HI_CLI_HOME}/modules/${module_name}/${module_action}/${module_sub_action}"
+    if [ -f "${sub_module_path}" ]; 
+    then
+      module_path="${sub_module_path}"
+    fi
+  fi
+  export module_path
+
+  get_dir_from_path module_dir "${module_path}"
+  export module_dir
+
+  get_file_from_path module_command "${module_path}"
+  export module_command
+
+  if [ -f "${module_dir}/config" ];
+  then
+    source "${module_dir}/config"
+  fi
+
+  if [ -f "${module_dir}/init" ];
+  then
+    source "${module_dir}/init"
+  fi
+  
+  if [ -f "${default_module}" ]; then
+    echo "default_module: $default_module"
+    source "${default_module}"
+  elif [ -f "${module_path}" ]; then
+    source "${module_path}"
+  else
+    show_hi_usage
+    exit
+  fi
+
+  result=0
+  cli=${cli}
+  run result cli
+
+  if [ ${result} == 0 ]; then
+    log_info "${cli} : success"
+  else
+    log_error "${cli} : fail" "no-debug"
+  fi
+  
+  exit 0
+}
+show_version
+main

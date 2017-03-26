@@ -1,0 +1,110 @@
+#!/bin/bash
+###############################################################################
+# Project: hi-cli
+# Description: The cross platform development toolkit - hi-cli
+# Author: John Deng (john.deng@outlook.com)
+#
+# Copyright (c) 2014-2017 John Deng (john.deng@outlook.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: John Deng (john.deng@outlook.com)
+# Updated: 2017-02-21
+###############################################################################
+
+source "${HI_CLI_HOME}/bin/clap"
+source "${HI_CLI_HOME}/bin/logging"
+source "${HI_CLI_HOME}/bin/colors"
+source "${HI_CLI_HOME}/bin/utils"
+
+function show_new_script_usage() {
+  show_version
+  echo "usages: "
+  echo "  ${app} new script name=mvn action=rebuild cli="'"'"mvn clean package -Dbuild=dev -Dmaven.test.skip=true"'"'"  "
+}
+
+#log_info "${HI_CLI_HOME}/modules/${module}/${action}"
+
+function create_new_script() {
+
+echo "#!/bin/bash
+###############################################################################
+# Project: hi-cli
+# Description: The cross platform development toolkit - hi-cli
+# Author: John Deng (john.deng@outlook.com)
+#
+# Copyright (c) 2014-2017 John Deng (john.deng@outlook.com)
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# Author: John Deng (john.deng@outlook.com)
+# Updated: $(date)
+# module: ${module}
+# Action: ${action}
+###############################################################################
+
+source \"${HI_CLI_HOME}/bin/colors"
+source \${HI_CLI_HOME}/bin/clap
+source \${HI_CLI_HOME}/bin/logging
+###############################################################################
+function run() {
+  cli="'"'"${cli}"'"'"
+
+  ${cli}
+
+  result=\$?
+
+  eval \$1="\\\${result}"
+  eval \$2="\\\${cli}"
+}
+
+###############################################################################
+
+" > ${HI_CLI_HOME}/modules/${module}/${action}
+
+}
+
+function run() {
+  log_debug "========== new ==============="
+  result=1
+  if [ "${action}" != "filter" ]; then
+    script_file=${HI_CLI_HOME}/modules/${module}/${action}
+
+    mkdir -p ${HI_CLI_HOME}/modules/${module}
+
+    if [ -f "${script_file}" ]; then
+      if prompt_yesorno "The module $script_file is already exist, do you wish to overwrie it? [yes/no]"; then
+        create_new_script
+      else
+        exit
+      fi
+    else
+      create_new_script 
+      # create link to $(brew --prefix)/etc/bash_completion.d for mac or /etc/bash_completion.d for linux 
+    fi
+  fi
+  result=$?
+
+  eval  $1='"$result"' 
+  eval  $2='"$cli"' 
+}
