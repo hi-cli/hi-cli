@@ -26,8 +26,8 @@ source "${HI_CLI_HOME}/bin/colors"
 
 function show_version()
 {
-    export HI_CLI_VERSION='0.0.3'
-    export HI_CLI_UPDATED_DATE='2017-03-18'
+    export HI_CLI_VERSION='0.0.4'
+    export HI_CLI_UPDATED_DATE='2017-03-26'
 
     ${ECHO_E} "${DARKGREEN}
      _     _            _ _

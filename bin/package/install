@@ -40,11 +40,14 @@ function run() {
     then
       rm -rf "${HI_CLI_HOME}/modules/${hi_package}"
     fi
-
-    module_url="${default_host_prefix}${hi_package}"
-    if [ $(is_url_available "${module_url}") == "no" ]; then
-      package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
-      parse_json module_url "${package_json_file}" modules ${hi_package} url
+    module_url=${url}
+    log_debug "url: ${url}"
+    if [ "${module_url}" == "" ]; then
+      module_url="${default_host_prefix}${hi_package}"
+      if [ $(is_url_available "${module_url}") == "no" ]; then
+        package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
+        parse_json module_url "${package_json_file}" modules ${hi_package} url
+      fi
     fi
     log_debug "module_url: ${module_url}"
 
