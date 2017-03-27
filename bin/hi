@@ -85,11 +85,11 @@ function main() {
   get_file_from_path module_command "${module_path}"
   export module_command
 
-  app_conf="${PWD}/hi.conf"
-  if [ -f "${app_conf}" ];
+  default_conf="${HI_CLI_HOME}/bin/${module_name}/hi.conf"
+  if [ -f "${default_conf}" ];
   then
-    log_debug "${app_conf}"
-    source "${app_conf}"
+    log_debug "${default_conf}"
+    source "${default_conf}"
   fi
 
   module_conf="${module_dir}/hi.conf"
@@ -97,6 +97,13 @@ function main() {
   then
     log_debug "${module_conf}" 
     source "${module_conf}" 
+  fi
+
+  app_conf="${PWD}/hi.conf"
+  if [ -f "${app_conf}" ];
+  then
+    log_debug "${app_conf}"
+    source "${app_conf}"
   fi
 
   module_init="${module_dir}/init"

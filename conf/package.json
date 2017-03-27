@@ -3,25 +3,11 @@
     "maitainer": "John Deng",
     "email": "john.deng@outlook.com",
     "modules": {
-        "ansible": {
-            "url": "https://github.com/hi-cli/hi-ansible.git",
-            "maitainer": "John Deng",
-            "email": "john.deng@outlook.com"
-        },
         "test": {
             "url": "https://github.com/hi-cli/hi-test.git",
             "maitainer": "John Deng",
             "email": "john.deng@outlook.com"
-        },
-        "openshift": {
-            "url": "https://github.com/hi-cli/hi-openshift.git",
-            "maitainer": "John Deng",
-            "email": "john.deng@outlook.com"
-        },
-        "oc": {
-            "url": "https://github.com/hi-cli/hi-oc.git",
-            "maitainer": "John Deng",
-            "email": "john.deng@outlook.com"
         }
+        // add your package below
     }
 }

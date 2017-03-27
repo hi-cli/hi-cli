@@ -34,7 +34,7 @@ function run() {
   result=1
   if [ "${hi_package}" != "" ];
   then
-    pushd "${HI_CLI_HOME}/modules" > /dev/null
+    
 
     if [ "${force}" == "force" ];
     then
@@ -50,7 +50,9 @@ function run() {
 
     # TODO: set default url and check if it's exist
 
-    cli="git clone ${module_url} ${hi_package}"
+    cli="git pull"
+
+    pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
 
     ${cli}
 

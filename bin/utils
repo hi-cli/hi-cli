@@ -83,3 +83,18 @@ function is_function() {
   fi
 
 }
+
+function get_url_status() {
+  response=$(curl -IL "$1")
+  status_code=$(echo $response | grep Status)
+  echo ${status_code/Status: /}
+}
+
+function is_url_available() {
+  if [ $(get_url_status $1 | grep '200' | wc -l) != 0 ]; then
+    echo "yes"
+  else
+    echo "no"
+  fi
+}
+

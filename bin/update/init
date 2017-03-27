@@ -30,34 +30,15 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function run() {
-  hi_package="${arg3}"
-  result=1
-  if [ "${hi_package}" != "" ];
-  then
-    pushd "${HI_CLI_HOME}/modules" > /dev/null
+  cli="git pull"
 
-    if [ "${force}" == "force" ];
-    then
-      rm -rf "${HI_CLI_HOME}/modules/${hi_package}"
-    fi
+  pushd "${HI_CLI_HOME}" > /dev/null
+  pwd
+  ${cli}
 
-    module_url="${default_host_prefix}${hi_package}"
-    if [ $(is_url_available "${module_url}") == "no" ]; then
-      package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
-      parse_json module_url "${package_json_file}" modules ${hi_package} url
-    fi
-    log_debug "module_url: ${module_url}"
+  result=$?
 
-    # TODO: set default url and check if it's exist
-
-    cli="git clone ${module_url} ${hi_package}"
-
-    ${cli}
-
-    result=$?
-
-    popd > /dev/null
-  fi
+  popd > /dev/null
 
   eval $1="\${result}"
   eval $2="\${cli}"
