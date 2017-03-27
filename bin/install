@@ -35,10 +35,18 @@ function showInstallErrorMessage()
 ###############################################################################
 $DEP_INSTALL_CMD
 
-ETC_PROFILE=/etc/profile
 
+profile=
+if [ -f "${HOME}/.zshrc" ]; then
+    profile="${HOME}/.zshrc"
+elif [ -f "${HOME}/.bashrc" ]; then
+    profile="${HOME}/.bashrc"
+else
+    profile="/etc/profile"
+fi
+    
 # remove if found hi-cli environment variables
-if [ $(cat $ETC_PROFILE | grep "\#hi-cli-begin" | wc -l) != 0 ]; then
+if [ $(cat ${profile} | grep "\#hi-cli-begin" | wc -l) != 0 ]; then
     #echo "replace ..."
     sed -n ":b
 $ !{
@@ -48,10 +56,10 @@ $ !{
 $ {
    s|\(\n\#hi-cli-begin\).*\(\n\)\([[:blank:]]*\)\(\#hi-cli-end\)|${REPLACEWITH}|
    p
-   }" $ETC_PROFILE > /tmp/.profile
+   }" ${profile} > /tmp/.profile
    showInstallErrorMessage
 
-   mv /tmp/.profile $ETC_PROFILE
+   mv /tmp/.profile ${profile}
    showInstallErrorMessage
 fi
 
@@ -64,12 +72,14 @@ if [ "${HI_CLI_BIN}" == "bin" ]; then
 fi
 echo  HI_CLI_HOME: "${HI_CLI_HOME}"
 
-echo "#hi-cli-begin
+cat >> "${profile}" <<_EOF_
+#hi-cli-begin
 export HI_CLI_HOME="${HI_CLI_HOME}"
 export PATH="\${HI_CLI_HOME}/bin":\$PATH
-#hi-cli-end" >> ${ETC_PROFILE}
+#hi-cli-end"
+_EOF_
 
-#source ${ETC_PROFILE}
+#source ${{profile}}
 showInstallErrorMessage
 
 echo -e "

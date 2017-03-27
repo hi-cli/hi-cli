@@ -52,6 +52,11 @@ app="hi"
 
 #log_info "Running: ${CMD_LINE}"
 
+function run() {
+    eval $1="1"
+    eval $2="unimplemented"
+}
+
 function main() {
 
   default_script_init="${HI_CLI_HOME}/bin/${module_name}/init"
@@ -106,16 +111,13 @@ function main() {
     source "${module_path}"
   fi
 
+  # main
   result=0
-
-  if [ "$(is_function run)" == "yes" ];
-  then
-    cli=${cli}
-    run result cli
-  else
-    log_debug "$(is_function run)"
+  cli=${cli}
+  run result cli
+  if [ "${result}" == "1" ] && [ "${cli}" == "unimplemented" ]; then
     show_hi_usage
-    exit  
+    exit
   fi
 
   if [ ${result} == 0 ]; then
