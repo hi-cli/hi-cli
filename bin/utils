@@ -64,13 +64,18 @@ function get_file_from_path() {
   eval $1="${src##*/}"
 }
 
+function get_folder_from_path() {
+  src=$2
+  eval $1="${src##*/}"
+}
+
 function get_dir_from_path() {
   src="$2"
   eval $1="\${src%/*}"
 }
 
 function is_function() {
-
+  #if type "$1" | grep -q '^function$' 2>/dev/null; then
   if [ $(type "$1" | grep "function" | wc -l) != 0 ]; then
     echo "yes"
   else
@@ -78,25 +83,3 @@ function is_function() {
   fi
 
 }
-
-function format_disk() {
-
-storage=$1
-
-fdisk ${storage} <<EOF
-d
-
-n
-p
-1
-
-
-
-t
-8e
-
-w
-EOF
-
-}
-

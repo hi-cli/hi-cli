@@ -21,6 +21,9 @@
 # Author: John Deng (john.deng@outlook.com)
 # Updated: 2017-02-11
 ###############################################################################
+
+source "${HI_CLI_HOME}/bin/logging"
+
 CLAP_VERSION=1.0.1
 
 ###############################################################################
@@ -46,7 +49,13 @@ while [ "$#" != "0" ]; do
         shift
     else
         if [ "$#" != "0" ]; then
-            export eval $(echo $1)="$1"
+            if [[ "$1" =~ ^[a-z][a-zA-Z0-9_]*$ ]]
+            then
+                log_debug "$1: valid"
+                export eval "$(echo $1)"="$1"
+            else
+                log_debug "$1: invalid"
+            fi
             CMD_LINE="$CMD_LINE $1"
             shift
         fi

@@ -21,7 +21,7 @@
 # Author: John Deng (john.deng@outlook.com)
 # Updated: 2017-02-11
 ###############################################################################
-source "${HI_CLI_HOME}/bin/init"
+source "${HI_CLI_HOME}/bin/sys"
 ###############################################################################
 # Common variables 
 export DARKRED="\033[1;31m"

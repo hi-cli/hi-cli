@@ -46,7 +46,7 @@ source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
 source "${HI_CLI_HOME}/bin/usage"
 source "${HI_CLI_HOME}/bin/utils"
-source "${HI_CLI_HOME}/bin/init"
+source "${HI_CLI_HOME}/bin/sys"
 
 app="hi"
 
@@ -54,7 +54,12 @@ app="hi"
 
 function main() {
 
-  import "${HI_CLI_HOME}/bin/${module_name}/init"
+  default_script_init="${HI_CLI_HOME}/bin/${module_name}/init"
+  if [ -f "${default_script_init}" ];
+  then
+    log_debug "${default_script_init}"
+    source "${default_script_init}"
+  fi
 
   default_module="${HI_CLI_HOME}/bin/${module_name}/${submodule_name}"
 
@@ -102,12 +107,13 @@ function main() {
   fi
 
   result=0
-  log_debug "is run a function: $(is_function run)"
+
   if [ "$(is_function run)" == "yes" ];
   then
     cli=${cli}
     run result cli
   else
+    log_debug "$(is_function run)"
     show_hi_usage
     exit  
   fi

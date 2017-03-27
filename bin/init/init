@@ -57,30 +57,44 @@ cat > "$1" <<_EOF_
 
 # TODO: added your config below
 
+app_name="$2"
 
 _EOF_
 }
 
+function init_app() {
+  new_workspace="$1"
+  app_name="$2"
+  mkdir -p "${new_workspace}"
+  pushd "${new_workspace}" > /dev/null
+  create_new_config "${new_workspace}/hi.conf" "${app_name}"
+
+  if [ ! -d ".git" ] && [ $(which git | grep git | wc -l) == 1 ]; then
+    git init
+  fi
+
+  popd > /dev/null  
+}
+
 function run() {
   result=1
-  if [ "${arg3}" != "" ]; then
-    new_workspace="${PWD}/${arg3}"
-    log_debug "new_workspace: ${new_workspace}"
-    
-    if [ ! -d "${new_workspace}" ]; then
-
-      mkdir -p "${new_workspace}"
-
-      pushd "${new_workspace}" > /dev/null
-
-      create_new_config "${new_workspace}/hi.conf"
-
-      popd > /dev/null
-    else
-      log_warn "${new_workspace} is already exist!"
-    fi
-
+  if [ "${arg2}" == "." ] || [ "${arg2}" == "" ];
+  then
+    new_workspace="${PWD}"
+  else
+    new_workspace="${PWD}/${arg2}"
   fi
+  get_folder_from_path app_name "${new_workspace}"
+  log_debug "new_workspace: ${new_workspace}"
+  
+  if [ -f "${new_workspace}/hi.conf" ]; then
+    if prompt_yesorno "${app_name} is already exist, do you wish to overwrie it? [yes/no]"; then
+      init_app "${new_workspace}" "${app_name}"
+    fi
+  else
+    init_app "${new_workspace}" "${app_name}"
+  fi
+
 
   result=$?
 

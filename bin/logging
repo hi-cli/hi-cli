@@ -22,11 +22,11 @@
 # Updated: 2017-02-11
 ###############################################################################
 
-source "${HI_CLI_HOME}/bin/init"
+source "${HI_CLI_HOME}/bin/sys"
 source "${HI_CLI_HOME}/bin/colors"
 
 function log_debug() {
-	if [ "${debugging}" == "debugging" ]; 
+	if [ "${dbg}" == "dbg" ] || [ "${dbg}" == "yes" ]; 
 	then
 		${ECHO_E} "${TEAL}[hi-cli] [LINE: ${BASH_LINENO[*]}] $1 ${ENDCOLOR}"	
 	fi
