@@ -27,9 +27,9 @@ source "${HI_CLI_HOME}/bin/colors"
 function show_hi_usage() {
 
   ${ECHO_E} "${PURPLE}Usages:
-  ${app} [man] [do] [something] with [arguments]
+  ${hi_app} [man] [do] [something] with [arguments]
 Examples:
-  ${app} package install moses
+  ${hi_app} package install moses
 For more information, run: 
   hi help${ENDCOLOR}"
 }

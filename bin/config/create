@@ -30,7 +30,7 @@ source "${HI_CLI_HOME}/bin/utils"
 function show_new_script_usage() {
   show_version
   echo "usages: "
-  echo "  ${app} new script name=mvn action=rebuild cli="'"'"mvn clean package -Dbuild=dev -Dmaven.test.skip=true"'"'"  "
+  echo "  ${hi_app} new script name=mvn action=rebuild cli="'"'"mvn clean package -Dbuild=dev -Dmaven.test.skip=true"'"'"  "
 }
 
 #log_info "${HI_CLI_HOME}/modules/${module}/${action}"
