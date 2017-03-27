@@ -82,8 +82,10 @@ _EOF_
 #source ${{profile}}
 showInstallErrorMessage
 
+mkdir -p "${HI_CLI_NAME}/modules"
+
 echo -e "
-Installed ${HI_CLI_NAME} successfully!
+Installed "${HI_CLI_NAME}" successfully!
 "
 
 ###############################################################################
