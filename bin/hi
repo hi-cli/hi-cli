@@ -85,22 +85,25 @@ function main() {
   get_file_from_path module_command "${module_path}"
   export module_command
 
-  if [ -f "${PWD}/hi.conf" ];
+  app_conf="${PWD}/hi.conf"
+  if [ -f "${app_conf}" ];
   then
-    log_debug "${PWD}/hi.conf"
-    source "${PWD}/hi.conf"
+    log_debug "${app_conf}"
+    source "${app_conf}"
   fi
 
-  if [ -f "${module_dir}/config" ];
+  module_conf="${module_dir}/hi.conf"
+  if [ -f "${module_conf}" ];
   then
-    log_debug "${module_dir}/config"
-    source "${module_dir}/config"
+    log_debug "${module_conf}" 
+    source "${module_conf}" 
   fi
 
-  if [ -f "${module_dir}/init" ];
+  module_init="${module_dir}/init"
+  if [ -f "${module_init}" ];
   then
-    log_debug "${module_dir}/init"
-    source "${module_dir}/init"
+    log_debug "${module_init}"
+    source "${module_init}"
   fi
 
   if [ -f "${default_module}" ]; then

@@ -45,6 +45,8 @@ function run() {
     parse_json module_url "${package_json_file}" modules ${hi_package} url
     log_debug "module_url: ${module_url}"
 
+    # TODO: set default url and check if it's exist
+
     cli="git clone ${module_url} ${hi_package}"
 
     ${cli}

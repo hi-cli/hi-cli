@@ -1,5 +1,7 @@
 {
     "description": "hi-cli modules",
+    "maitainer": "John Deng",
+    "email": "john.deng@outlook.com",
     "modules": {
         "ansible": {
             "url": "https://github.com/hi-cli/hi-ansible.git",
@@ -13,6 +15,11 @@
         },
         "openshift": {
             "url": "https://github.com/hi-cli/hi-openshift.git",
+            "maitainer": "John Deng",
+            "email": "john.deng@outlook.com"
+        },
+        "oc": {
+            "url": "https://github.com/hi-cli/hi-oc.git",
             "maitainer": "John Deng",
             "email": "john.deng@outlook.com"
         }

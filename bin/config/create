@@ -71,7 +71,7 @@ function run() {
   log_debug "========== new ==============="
   result=1
   if [ "${module}" != "" ]; then
-    script_file=""${HI_CLI_HOME}/modules/${module}/config""
+    script_file=""${HI_CLI_HOME}/modules/${module}/hi.conf""
 
     log_debug "${script_file}"
 
