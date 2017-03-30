@@ -19,8 +19,28 @@
 # limitations under the License.
 #
 # Author: John Deng (john.deng@outlook.com)
-# Updated: Sun Mar 26 22:55:11 CST 2017
-# Module: ansible
+# Updated: 2017-02-11
 ###############################################################################
 
-default_host_prefix="https://github.com/hi-cli/hi-"
+source "${HI_CLI_HOME}/bin/colors"
+source "${HI_CLI_HOME}/bin/version"
+
+function show_app_info()
+{
+    space=" "
+    read -d '' info << _EOF_
+mm           ##                         mmmm         ##
+##           ""                         ""##         ""
+##m####m   ####                m#####m    ##       ####
+##"   ##     ##               ##"    "    ##         ##
+##    ##     ##      #####    ##          ##         ##
+##    ##  mmm##mmm            "##mmmm#    ##mmm   mmm##mmm
+""    ""  """"""""              """""      """"   """"""""
+_EOF_
+
+${ECHO_E} "${DARKGREEN}
+${info}
+${DARKBLUE} 
+Version: $HI_CLI_VERSION Author: John Deng Email: john.deng@outlook.com${ENDCOLOR}
+    "
+}

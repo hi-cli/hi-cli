@@ -25,7 +25,7 @@
 source "${HI_CLI_HOME}/bin/logging"
 
 CLAP_VERSION=1.0.1
-
+log_debug "entering ${HI_CLI_HOME}/bin/clap with $@"
 ###############################################################################
 # Parse the command line
 CMD_LINE=${0##*/}
@@ -51,10 +51,10 @@ while [ "$#" != "0" ]; do
         if [ "$#" != "0" ]; then
             if [[ "$1" =~ ^[a-z][a-zA-Z0-9_]*$ ]]
             then
-                log_debug "$1: valid"
+                log_debug "[clap] $1: valid"
                 export eval "$(echo $1)"="$1"
             else
-                log_debug "$1: invalid"
+                log_debug "[clap] $1: invalid"
             fi
             CMD_LINE="$CMD_LINE $1"
             shift
@@ -65,4 +65,4 @@ done
 export CMD_LINE
 ###############################################################################
 
-
+log_debug "leaving ${HI_CLI_HOME}/bin/clap"

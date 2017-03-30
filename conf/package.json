@@ -2,6 +2,7 @@
     "description": "hi-cli modules",
     "maitainer": "John Deng",
     "email": "john.deng@outlook.com",
+    "url-prefix": "https://github.com/hi-cli/hi-",
     "modules": {
         "test": {
             "url": "https://github.com/hi-cli/hi-test.git",

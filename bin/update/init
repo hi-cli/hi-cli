@@ -26,19 +26,55 @@
 ###############################################################################
 
 source "${HI_CLI_HOME}/bin/colors"
-source "${HI_CLI_HOME}/bin/clap"
+#source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
+function update_module() {
+  hi_package="${arg2}"
+  result=1
+  if [ "${hi_package}" != "" ];
+  then
+    # TODO: set default url and check if it's exist
+
+    cli="hi update ${hi_package}"
+
+    log_debug "${HI_CLI_HOME}/modules/${hi_package}"
+
+    pushd "${HI_CLI_HOME}/modules/${hi_package}" # > /dev/null
+
+    if [ "${force}" == "force" ];
+    then
+      git reset --hard
+    fi
+    git branch --set-upstream-to=origin/master
+    git pull
+
+    result=$?
+
+    popd > /dev/null
+  fi
+
+  eval $1="\${result}"
+  eval $2="\${cli}"
+}
+
 function run() {
-  cli="git pull"
 
-  pushd "${HI_CLI_HOME}" > /dev/null
-  pwd
-  ${cli}
+  if [ "${arg2}" == "" ]; then
 
-  result=$?
+    cli="git pull"
 
-  popd > /dev/null
+    pushd "${HI_CLI_HOME}" > /dev/null
+    pwd
+    ${cli}
+
+    result=$?
+
+    popd > /dev/null
+
+  else
+    update_module result cli
+  fi
 
   eval $1="\${result}"
   eval $2="\${cli}"

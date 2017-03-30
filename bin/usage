@@ -26,7 +26,7 @@ source "${HI_CLI_HOME}/bin/colors"
 
 function show_hi_usage() {
 
-  ${ECHO_E} "${PURPLE}Usages:
+  ${ECHO_E} "${GRAY}Usages:
   ${hi_app} [man] [do] [something] with [arguments]
 Examples:
   ${hi_app} package install moses
