@@ -34,8 +34,6 @@ function run() {
   result=1
   if [ "${hi_package}" != "" ];
   then
-    pushd "${HI_CLI_HOME}/modules" > /dev/null
-
     if [ "${force}" == "force" ];
     then
       rm -rf "${HI_CLI_HOME}/modules/${hi_package}"
@@ -52,13 +50,11 @@ function run() {
     log_debug "module_url: ${module_url}"
 
     # TODO: set default url and check if it's exist
-
+    
     cli="git clone ${module_url} ${hi_package}"
-
+    pushd "${HI_CLI_HOME}/modules" > /dev/null
     ${cli}
-
     result=$?
-
     popd > /dev/null
   fi
 
