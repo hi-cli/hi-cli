@@ -64,8 +64,11 @@ $ {
 fi
 
 #echo "append ..."
-
-HI_CLI_HOME="${PWD}"
+if [ "$1" != "" ]; then
+    HI_CLI_HOME=$1
+else
+    HI_CLI_HOME="${PWD}"
+fi
 HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
 if [ "${HI_CLI_BIN}" == "bin" ]; then
   HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
