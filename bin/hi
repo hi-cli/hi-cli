@@ -40,6 +40,7 @@ arg3=$3
 arg4=$4
 arg5=$5
 
+source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
@@ -118,10 +119,6 @@ function main() {
     log_debug "module_path: ${module_path}"
     source "${module_path}"
   fi
-
-  # main
-  # in order to override hi.conf with arguments, clap should be here
-  source "${HI_CLI_HOME}/bin/clap"
 
   result=0
   cli=${cli}
