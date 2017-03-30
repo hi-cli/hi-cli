@@ -24,20 +24,29 @@
 
 source "${HI_CLI_HOME}/bin/colors"
 
+function show_app_info()
+{
+    space=" "
+    read -d '' info << _EOF_
+mm           ##                         mmmm         ##
+##           ""                         ""##         ""
+##m####m   ####                m#####m    ##       ####
+##"   ##     ##               ##"    "    ##         ##
+##    ##     ##      #####    ##          ##         ##
+##    ##  mmm##mmm            "##mmmm#    ##mmm   mmm##mmm
+""    ""  """"""""              """""      """"   """"""""
+_EOF_
+
+${ECHO_E} "${DARKGREEN}${info}
+${DARKBLUE}Version: $HI_CLI_VERSION Author: John Deng Email: john.deng@outlook.com${ENDCOLOR}
+"
+}
+
 function show_version()
 {
     export HI_CLI_VERSION='0.0.4'
     export HI_CLI_UPDATED_DATE='2017-03-26'
 
-    ${ECHO_E} "${DARKGREEN}
-     _     _            _ _
-    | |__ (_)       ___| (_)
-    | '_ \| |_____ / __| | |
-    | | | | |_____| (__| | |
-    |_| |_|_|      \___|_|_|
-    ${ENDCOLOR}${DARKBLUE} 
-    Version: $HI_CLI_VERSION 
-    Author: John Deng
-    Email: john.deng@outlook.com
-${ENDCOLOR}"
+    show_app_info
 }
+
