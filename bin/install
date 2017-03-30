@@ -71,6 +71,7 @@ if [ "${HI_CLI_BIN}" == "bin" ]; then
   HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
 fi
 echo  HI_CLI_HOME: "${HI_CLI_HOME}"
+mkdir -p "${HI_CLI_NAME}/modules"
 
 cat >> "${profile}" <<_EOF_
 #hi-cli-begin
@@ -81,8 +82,6 @@ _EOF_
 
 #source ${{profile}}
 showInstallErrorMessage
-
-mkdir -p "${HI_CLI_NAME}/modules"
 
 echo -e "
 Installed "${HI_CLI_NAME}" successfully!
