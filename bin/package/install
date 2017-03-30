@@ -28,10 +28,17 @@
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
+source "${HI_CLI_HOME}/bin/init-app"
 ###############################################################################
 function run() {
   hi_package="${arg3}"
   result=1
+
+  if [ ! -f "${HOME}/.${hi_package}/hi.conf" ]; then
+    mkdir -p "${HOME}/.${hi_package}/" 
+    init_app "${HOME}/.${hi_package}" "$(whoami)" "${hi_package}"
+  fi
+
   if [ "${hi_package}" != "" ];
   then
     if [ "${force}" == "force" ];

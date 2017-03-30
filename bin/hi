@@ -56,15 +56,18 @@ function run() {
     eval $2="unimplemented"
 }
 
-function main() {
-
-  default_script_init="${HI_CLI_HOME}/bin/${module_name}/init"
-  if [ -f "${default_script_init}" ];
+function import() {
+  imported_source="$1"
+  if [ -f "${imported_source}" ];
   then
-    log_debug "${default_script_init}"
-    source "${default_script_init}"
+    log_debug "${imported_source}"
+    source "${imported_source}"
   fi
+}
 
+function main() {
+  import "${HI_CLI_HOME}/bin/${module_name}/init"
+  
   default_module="${HI_CLI_HOME}/bin/${module_name}/${submodule_name}"
 
   module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}"
@@ -84,41 +87,14 @@ function main() {
   get_file_from_path module_command "${module_path}"
   export module_command
 
-  default_conf="${HI_CLI_HOME}/bin/${module_name}/hi.conf"
-  if [ -f "${default_conf}" ];
-  then
-    log_debug "${default_conf}"
-    source "${default_conf}"
-  fi
-
-  module_conf="${module_dir}/hi.conf"
-  if [ -f "${module_conf}" ];
-  then
-    log_debug "${module_conf}" 
-    source "${module_conf}" 
-  fi
-
-  app_conf="${PWD}/hi.conf"
-  if [ -f "${app_conf}" ];
-  then
-    log_debug "${app_conf}"
-    source "${app_conf}"
-  fi
-
-  module_init="${module_dir}/init"
-  if [ -f "${module_init}" ];
-  then
-    log_debug "${module_init}"
-    source "${module_init}"
-  fi
-
-  if [ -f "${default_module}" ]; then
-    log_debug "default_module: ${default_module}"
-    source "${default_module}"
-  elif [ -f "${module_path}" ]; then
-    log_debug "module_path: ${module_path}"
-    source "${module_path}"
-  fi
+  # below import must is in order
+  import "${HI_CLI_HOME}/bin/${module_name}/hi.conf"
+  import "${module_dir}/hi.conf"
+  import "${HOME}/.${module_name}/hi.conf"
+  import "${PWD}/hi.conf"
+  import "${module_dir}/init"
+  import "${default_module}"
+  import "${module_path}"
 
   result=0
   cli=${cli}
