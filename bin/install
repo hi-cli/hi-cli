@@ -32,21 +32,11 @@ function showInstallErrorMessage()
     fi
 }
 
-###############################################################################
-$DEP_INSTALL_CMD
 
-
-profile=
-if [ -f "${HOME}/.zshrc" ]; then
-    profile="${HOME}/.zshrc"
-elif [ -f "${HOME}/.bashrc" ]; then
-    profile="${HOME}/.bashrc"
-else
-    profile="/etc/profile"
-fi
-    
+function ensure_environment() {
+profile="$1"
 # remove if found hi-cli environment variables
-if [ $(cat ${profile} | grep "\#hi-cli-begin" | wc -l) != 0 ]; then
+if [ $(cat "${profile}" | grep "\#hi-cli-begin" | wc -l) != 0 ]; then
     #echo "replace ..."
     sed -n ":b
 $ !{
@@ -56,27 +46,13 @@ $ !{
 $ {
    s|\(\n\#hi-cli-begin\).*\(\n\)\([[:blank:]]*\)\(\#hi-cli-end\)|${REPLACEWITH}|
    p
-   }" ${profile} > /tmp/.profile
+   }" "${profile}" > /tmp/.profile
    showInstallErrorMessage
 
-   mv /tmp/.profile ${profile}
+   mv /tmp/.profile "${profile}"
    showInstallErrorMessage
 fi
 
-#echo "append ..."
-if [ "$1" != "" ]; then
-    echo "HI_CLI_HOME: $1"
-    HI_CLI_HOME=$1
-else
-    HI_CLI_HOME="${PWD}"
-    echo "HI_CLI_HOME: ${PWD}"
-fi
-HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
-if [ "${HI_CLI_BIN}" == "bin" ]; then
-  HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
-fi
-echo  HI_CLI_HOME: "${HI_CLI_HOME}"
-mkdir -p "${HI_CLI_HOME}/modules"
 
 cat >> "${profile}" <<_EOF_
 #hi-cli-begin
@@ -84,6 +60,35 @@ export HI_CLI_HOME="${HI_CLI_HOME}"
 export PATH="\${HI_CLI_HOME}/bin":\$PATH
 #hi-cli-end
 _EOF_
+
+}
+###############################################################################
+
+profile=
+if [ -f "${HOME}/.zshrc" ]; then
+    profile="${HOME}/.zshrc"
+elif [ -f "${HOME}/.bashrc" ]; then
+    profile="${HOME}/.bashrc"
+else
+    profile="/etc/profile"
+fi
+ 
+#echo "append ..."
+if [ "$1" != "" ]; then
+    HI_CLI_HOME=$1
+else
+    HI_CLI_HOME="${PWD}"
+fi
+HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
+if [ "${HI_CLI_BIN}" == "bin" ]; then
+  HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
+fi
+echo ""
+echo  HI_CLI_HOME: "${HI_CLI_HOME}"
+mkdir -p "${HI_CLI_HOME}/modules"
+
+ensure_environment "/etc/profile"
+ensure_environment "${profile}"
 
 #source ${{profile}}
 showInstallErrorMessage
