@@ -65,29 +65,31 @@ fi
 
 #echo "append ..."
 if [ "$1" != "" ]; then
+    echo "HI_CLI_HOME: $1"
     HI_CLI_HOME=$1
 else
     HI_CLI_HOME="${PWD}"
+    echo "HI_CLI_HOME: ${PWD}"
 fi
 HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
 if [ "${HI_CLI_BIN}" == "bin" ]; then
   HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
 fi
 echo  HI_CLI_HOME: "${HI_CLI_HOME}"
-mkdir -p "${HI_CLI_NAME}/modules"
+mkdir -p "${HI_CLI_HOME}/modules"
 
 cat >> "${profile}" <<_EOF_
 #hi-cli-begin
 export HI_CLI_HOME="${HI_CLI_HOME}"
 export PATH="\${HI_CLI_HOME}/bin":\$PATH
-#hi-cli-end"
+#hi-cli-end
 _EOF_
 
 #source ${{profile}}
 showInstallErrorMessage
 
 echo -e "
-Installed "${HI_CLI_NAME}" successfully!
+Installed ${HI_CLI_NAME} successfully!
 "
 
 ###############################################################################
