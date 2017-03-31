@@ -112,5 +112,8 @@ function main() {
   
   exit 0
 }
-show_version
+
+if [ "${hide_version}" == "" ]; then
+  show_version
+fi
 main
