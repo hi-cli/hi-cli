@@ -44,10 +44,11 @@ source "${HI_CLI_HOME}/bin/utils"
 
 app="hpm"
 
-#log_info "Running: ${CMD_LINE}"
-
 function main() {
-  log_info "hpm is not implemented yet!"
+  cli="hi package ${CMD_LINE/hpm /}"
+  
+  ${cli} hide_version
+
   exit 0
 }
 show_version
