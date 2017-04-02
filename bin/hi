@@ -23,12 +23,17 @@
 ###############################################################################
 
 if [ "${HI_CLI_HOME}" == "" ]; then
-  echo ""
-  echo "Warning:"
-  echo "Please install hi-cli first!"
-  echo "cd /path/to/hi-cli/"
-  echo "./bin/install"
-  exit
+  if [ -f "/usr/local/hi-cli/bin/hi" ]; then
+    HI_CLI_HOME="/usr/local/hi-cli"
+    PATH="${HI_CLI_HOME}/bin":$PATH
+  else
+    echo ""
+    echo "Warning:"
+    echo "Please install hi-cli first!"
+    echo "cd /path/to/hi-cli/"
+    echo "./bin/install"
+    exit
+  fi
 fi
 
 module_name=$1
