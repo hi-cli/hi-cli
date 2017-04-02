@@ -88,6 +88,9 @@ echo  HI_CLI_HOME: "${HI_CLI_HOME}"
 mkdir -p "${HI_CLI_HOME}/modules"
 
 if [ -d /etc/profile.d ]; then
+    if [ ! -f /etc/profile.d/hienv.sh ]
+        touch /etc/profile.d/hienv.sh
+    fi
     ensure_environment "/etc/profile.d/hienv.sh"
 else
     ensure_environment "${profile}"
