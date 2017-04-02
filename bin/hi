@@ -26,8 +26,8 @@ if [ "${HI_CLI_HOME}" == "" ]; then
   echo ""
   echo "Warning:"
   echo "Please install hi-cli first!"
-  echo "cd /path/to/hi-cli/bin"
-  echo "./install"
+  echo "cd /path/to/hi-cli/"
+  echo "./bin/install"
   exit
 fi
 

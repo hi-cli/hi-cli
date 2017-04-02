@@ -87,8 +87,13 @@ echo ""
 echo  HI_CLI_HOME: "${HI_CLI_HOME}"
 mkdir -p "${HI_CLI_HOME}/modules"
 
-ensure_environment "/etc/profile"
-ensure_environment "${profile}"
+if [ -d /etc/profile.d ]; then
+    ensure_environment "/etc/profile.d/hienv.sh"
+else
+    ensure_environment "${profile}"
+fi
+
+ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
 
 #source ${{profile}}
 showInstallErrorMessage
