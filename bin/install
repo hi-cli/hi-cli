@@ -121,12 +121,13 @@ function main() {
         exit 1
         fi
     fi
+    printf "Please wait ..."
     env git clone --depth=1 https://github.com/hi-cli/hi-cli.git "${HI_CLI_HOME}" || {
         printf "Error: git clone of hi-cli repo failed\n"
         exit 1
     }
-
-    pushd ${HI_CLI_HOME} > /dev/null
+    echo ""
+    pushd "${HI_CLI_HOME}" > /dev/null
         HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
         if [ "${HI_CLI_BIN}" == "bin" ]; then
         HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
