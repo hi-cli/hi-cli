@@ -108,27 +108,24 @@ function main() {
         HI_CLI_HOME="/usr/local/hi-cli"
     fi
     
-    
 
-    pushd ${HI_CLI_HOME}/../ > /dev/null
-        umask g-w,o-w
-        printf "${BLUE}Cloning hi-cli...${NORMAL}\n"
-        hash git >/dev/null 2>&1 || {
-            echo "Error: git is not installed"
-            exit 1
-        }
-        if [ "$OSTYPE" = cygwin ]; then
-            if git --version | grep msysgit > /dev/null; then
-            echo "Error: Windows/MSYS Git is not supported on Cygwin"
-            echo "Error: Make sure the Cygwin git package is installed and is first on the path"
-            exit 1
-            fi
+    umask g-w,o-w
+    printf "${BLUE}Cloning hi-cli...${NORMAL}\n"
+    hash git >/dev/null 2>&1 || {
+        echo "Error: git is not installed"
+        exit 1
+    }
+    if [ "$OSTYPE" = cygwin ]; then
+        if git --version | grep msysgit > /dev/null; then
+        echo "Error: Windows/MSYS Git is not supported on Cygwin"
+        echo "Error: Make sure the Cygwin git package is installed and is first on the path"
+        exit 1
         fi
-        env git clone --depth=1 https://github.com/hi-cli/hi-cli.git hi-cli || {
-            printf "Error: git clone of hi-cli repo failed\n"
-            exit 1
-        }
-    popd > /dev/null
+    fi
+    env git clone --depth=1 https://github.com/hi-cli/hi-cli.git "${HI_CLI_HOME}" || {
+        printf "Error: git clone of hi-cli repo failed\n"
+        exit 1
+    }
 
     pushd ${HI_CLI_HOME} > /dev/null
         HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
