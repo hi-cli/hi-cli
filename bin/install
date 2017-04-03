@@ -32,6 +32,19 @@ function showInstallErrorMessage()
     fi
 }
 
+function write_env() {
+    profile=$1
+    if [ "${profile}" == "" ]; then
+        return 1
+    fi
+    cat >> "${profile}" <<_EOF_
+#hi-cli-begin
+export HI_CLI_HOME="${HI_CLI_HOME}"
+export PATH="\${HI_CLI_HOME}/bin":\$PATH
+#hi-cli-end
+_EOF_
+
+}
 
 function ensure_environment() {
 profile="$1"
@@ -53,58 +66,91 @@ $ {
    showInstallErrorMessage
 fi
 
-
-cat >> "${profile}" <<_EOF_
-#hi-cli-begin
-export HI_CLI_HOME="${HI_CLI_HOME}"
-export PATH="\${HI_CLI_HOME}/bin":\$PATH
-#hi-cli-end
-_EOF_
-
+    write_env "${profile}"
 }
+
 ###############################################################################
+function main() {
+    if which tput >/dev/null 2>&1; then
+      ncolors=$(tput colors)
+    fi
+    if [ -t 1 ] && [ -n "$ncolors" ] && [ "$ncolors" -ge 8 ]; then
+        RED="$(tput setaf 1)"
+        GREEN="$(tput setaf 2)"
+        YELLOW="$(tput setaf 3)"
+        BLUE="$(tput setaf 4)"
+        BOLD="$(tput bold)"
+        NORMAL="$(tput sgr0)"
+    else
+        RED=""
+        GREEN=""
+        YELLOW=""
+        BLUE=""
+        BOLD=""
+        NORMAL=""
+    fi
 
-profile=
-if [ -f "${HOME}/.zshrc" ]; then
-    profile="${HOME}/.zshrc"
-elif [ -f "${HOME}/.bashrc" ]; then
-    profile="${HOME}/.bashrc"
-else
-    profile="/etc/profile"
-fi
- 
-#echo "append ..."
-if [ "$1" != "" ]; then
-    HI_CLI_HOME=$1
-else
-    HI_CLI_HOME="${PWD}"
-fi
-HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
-if [ "${HI_CLI_BIN}" == "bin" ]; then
-  HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
-fi
-echo ""
-echo  HI_CLI_HOME: "${HI_CLI_HOME}"
-mkdir -p "${HI_CLI_HOME}/modules"
+    set -e
 
-if [ -d /etc/profile.d ]; then
-    cat > "/etc/profile.d/hienv.sh" <<_EOF_
-#hi-cli-begin
-export HI_CLI_HOME="${HI_CLI_HOME}"
-export PATH="\${HI_CLI_HOME}/bin":\$PATH
-#hi-cli-end
-_EOF_
-else
-    ensure_environment "${profile}"
-fi
+    profile=
+    if [ -f "${HOME}/.zshrc" ]; then
+        profile="${HOME}/.zshrc"
+    elif [ -f "${HOME}/.bashrc" ]; then
+        profile="${HOME}/.bashrc"
+    else
+        profile="/etc/profile"
+    fi
+    
+    #echo "append ..."
+    if [ "$1" != "" ]; then
+        HI_CLI_HOME=$1
+    else
+        HI_CLI_HOME="/usr/local/hi-cli"
+    fi
+    
+    
 
-ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
+    pushd ${HI_CLI_HOME}/../ > /dev/null
+        umask g-w,o-w
+        printf "${BLUE}Cloning hi-cli...${NORMAL}\n"
+        hash git >/dev/null 2>&1 || {
+            echo "Error: git is not installed"
+            exit 1
+        }
+        if [ "$OSTYPE" = cygwin ]; then
+            if git --version | grep msysgit > /dev/null; then
+            echo "Error: Windows/MSYS Git is not supported on Cygwin"
+            echo "Error: Make sure the Cygwin git package is installed and is first on the path"
+            exit 1
+            fi
+        fi
+        env git clone --depth=1 https://github.com/hi-cli/hi-cli.git hi-cli || {
+            printf "Error: git clone of hi-cli repo failed\n"
+            exit 1
+        }
+    popd > /dev/null
 
-#source ${{profile}}
-showInstallErrorMessage
+    pushd ${HI_CLI_HOME} > /dev/null
+        HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
+        if [ "${HI_CLI_BIN}" == "bin" ]; then
+        HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
+        fi
+        echo ""
+        echo  HI_CLI_HOME: "${HI_CLI_HOME}"
+        mkdir -p "${HI_CLI_HOME}/modules"
 
-echo -e "
-Installed ${HI_CLI_NAME} successfully!
-"
+        if [ -d /etc/profile.d ]; then
+            write_env "/etc/profile.d/hienv.sh"
+        else
+            ensure_environment "${profile}"
+        fi
 
+        ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
+
+        showInstallErrorMessage
+
+        printf "${BLUE} Installed hi-cli successfully!\n${NORMAL}"
+    popd > /dev/null
+}
+main
 ###############################################################################

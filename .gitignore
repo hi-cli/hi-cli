@@ -1,3 +1,4 @@
 modules/
 bin/allmake
 *.zip
+.DS_Store
