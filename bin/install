@@ -137,8 +137,7 @@ function main() {
         if [ "${HI_CLI_BIN}" == "bin" ]; then
         HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
         fi
-        #echo ""
-        #echo  HI_CLI_HOME: "${HI_CLI_HOME}"
+
         mkdir -p "${HI_CLI_HOME}/modules"
 
         if [ -d /etc/profile.d ]; then
