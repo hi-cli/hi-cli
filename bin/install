@@ -108,7 +108,6 @@ function main() {
         HI_CLI_HOME="/usr/local/hi-cli"
     fi
     
-
     umask g-w,o-w
     printf "${BLUE}Cloning hi-cli...${NORMAL}\n"
     hash git >/dev/null 2>&1 || {
