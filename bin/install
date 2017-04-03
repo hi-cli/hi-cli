@@ -121,6 +121,12 @@ function main() {
         exit 1
         fi
     fi
+
+    if [ -d "${HI_CLI_HOME}" ]; then
+    then
+        printf "${YELLOW}hi-cli is already installed in ${HI_CLI_HOME}!\n${NORMAL}"
+        exit
+    fi
     printf "Please wait ..."
     env git clone --depth=1 https://github.com/hi-cli/hi-cli.git "${HI_CLI_HOME}" || {
         printf "Error: git clone of hi-cli repo failed\n"
