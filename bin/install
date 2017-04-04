@@ -124,7 +124,7 @@ function main() {
 
     if [ -f "${HI_CLI_HOME}/bin/hi" ]; then
         printf "${YELLOW}hi-cli is already installed in ${HI_CLI_HOME}!\n${NORMAL}"
-        which hi
+        which hi > /dev/null
         if [ $? == 0 ]; then
             hi update
         fi
