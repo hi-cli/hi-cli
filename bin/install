@@ -21,17 +21,6 @@
 # Author: John Deng (john.deng@outlook.com)
 # Updated: 2017-02-11
 ###############################################################################
-echo "$0 $@"
-###############################################################################
-# Show version
-function showInstallErrorMessage()
-{
-    if [ $? != 0 ]; then
-        echo -e "Installing hi-cli failed!"
-        exit
-    fi
-}
-
 function write_env() {
     profile=$1
     if [ "${profile}" == "" ]; then
@@ -60,10 +49,8 @@ $ {
    s|\(\n\#hi-cli-begin\).*\(\n\)\([[:blank:]]*\)\(\#hi-cli-end\)|${REPLACEWITH}|
    p
    }" "${profile}" > /tmp/.profile
-   showInstallErrorMessage
 
    mv /tmp/.profile "${profile}"
-   showInstallErrorMessage
 fi
 
     write_env "${profile}"
@@ -151,8 +138,6 @@ function main() {
         fi
 
         ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
-
-        showInstallErrorMessage
 
         printf "${BLUE}Installed hi-cli successfully!\n${NORMAL}"
     popd > /dev/null
