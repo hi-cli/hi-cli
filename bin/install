@@ -138,6 +138,7 @@ function main() {
         fi
 
         ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
+        ln -sf "${HI_CLI_HOME}/bin/hpm" "/usr/local/bin/hpm"
 
         printf "${BLUE}Installed hi-cli successfully!\n${NORMAL}"
     popd > /dev/null
