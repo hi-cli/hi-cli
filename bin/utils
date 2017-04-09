@@ -98,3 +98,9 @@ function is_url_available() {
   fi
 }
 
+function is_connected() {
+  host=$1
+  port=$2
+  res=$(echo $(telnet ${host} ${port} &) | grep "Escape character is '^]'." | wc -l)
+  [ ${res} == 1 ] && echo "yes" || echo "no" 
+}
