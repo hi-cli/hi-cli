@@ -57,6 +57,12 @@ function run() {
     git pull
 
     result=$?
+    hi_update="${HI_CLI_HOME}/modules/hi_package/hi.update"
+    if [ ${result} == 0 ] && [ -f "${hi_update}"  ]; then
+      source "${hi_update}"
+      update
+      result=$?
+    fi
 
     popd > /dev/null
   fi
