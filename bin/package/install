@@ -62,9 +62,9 @@ function run() {
     pushd "${HI_CLI_HOME}/modules" > /dev/null
     ${cli}
     result=$?
-    hi_install="${HI_CLI_HOME}/modules/hi_package/hi.install"
-    if [ ${result} == 0 ] && [ -f "${hi_install}"  ]; then
-      source "${hi_install}"
+    hi_module_install="${HI_CLI_HOME}/modules/hi_package/.install"
+    if [ ${result} == 0 ] && [ -f "${hi_module_install}"  ]; then
+      source "${hi_module_install}"
       install
       result=$?
     fi
