@@ -71,6 +71,8 @@ function import() {
 }
 
 function main() {
+  export working_dir=$PWD
+
   import "${HI_CLI_HOME}/bin/${module_name}/init"
   
   default_module="${HI_CLI_HOME}/bin/${module_name}/${submodule_name}"
