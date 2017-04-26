@@ -63,7 +63,7 @@ function run() {
     ${cli}
     result=$?
     if [ ${ver} != "" ]; then
-      pusd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
+      pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
       git checkout ${ver}
       popd > /dev/null
     fi
