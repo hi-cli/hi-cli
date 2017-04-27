@@ -64,6 +64,10 @@ function run() {
       result=$?
     fi
 
+    if [ ${ver} != "" ]; then
+      git checkout ${ver}
+    fi
+
     popd > /dev/null
   fi
 
