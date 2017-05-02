@@ -64,7 +64,7 @@ function run() {
       result=$?
     fi
 
-    if [ ${ver} != "" ]; then
+    if [ "${ver}" != "" ]; then
       git checkout ${ver}
     fi
 
