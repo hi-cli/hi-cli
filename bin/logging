@@ -26,7 +26,7 @@ source "${HI_CLI_HOME}/bin/sys"
 source "${HI_CLI_HOME}/bin/colors"
 
 function log_debug() {
-	if [ "${dbg}" == "dbg" ] || [ "${dbg}" == "yes" ]; 
+	if [ "${hi_debug}" == "hi_debug" ] || [ "${hi_debug}" == "yes" ]; 
 	then
 		${ECHO_E} "${TEAL}[hi-cli] [LINE: ${BASH_LINENO[*]}] $1 ${ENDCOLOR}"	
 	fi
