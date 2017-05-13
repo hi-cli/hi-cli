@@ -28,7 +28,7 @@ function prompt_yesorno ()
 {
     while true; do
         ${ECHO_E} "${YELLOW}"
-        read -p "$1 " yn < /dev/tty
+        read -p "[hi-cli] $1 " yn < /dev/tty
         ${ECHO_E} "${ENDCOLOR}"
         case $yn in
             [Yy]* ) return 0;;
