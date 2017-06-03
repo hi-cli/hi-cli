@@ -27,42 +27,44 @@ source "${HI_CLI_HOME}/bin/colors"
 
 function log_base()
 {
-	${ECHO_E} "$2[hi-cli] $1 ${ENDCOLOR}"
+	${ECHO_E} "${DARKGREEN}[hi-cli]${ENDCOLOR}$2 $1 ${ENDCOLOR}"
 }
 
 function log_debug() {
 	color=$2
+	level=$3
 	if [ "${color}" == "" ]; then
 		color="${DARKTEAL}"
+	fi
+	if [ "${level}" == "" ]; then
+		level="[debug]"
 	fi
 
 	if [ "${hi_debug}" == "hi_debug" ] || [ "${hi_debug}" == "yes" ]; 
 	then
 		file_name=$(echo ${BASH_SOURCE[1]##*/})
 		line_number=$(echo ${BASH_LINENO[*]} | awk '{print $1}')	
-		log_base "[line: ${line_number}] [file: ${file_name}] $1" "${color}"
-	else
-		log_base "$1" "${color}"
+		log_base "[line: ${line_number}] [file: ${file_name}] ${level} ${ENDCOLOR} $1" "${color}"
 	fi
 }
 
 function log_info()
 {
-	log_base "$1" "${GREEN}"
+	log_base "[info] $1" "${GREEN}"
 }
 
 function log_trace()
 {
-	log_base "$1" "${TEAL}"
+	log_base "[trace] $1" "${TEAL}"
 }
 
 function log_warn()
 {
-	log_base "$1" "${YELLOW}"
+	log_base "[warn] $1" "${YELLOW}"
 }
 
 function log_error()
 {
-	log_debug "$1" "${RDARKREDED}"
+	log_debug "$1" "${RDARKREDED}" "[error]"
 }
 
