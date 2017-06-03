@@ -25,16 +25,25 @@
 source "${HI_CLI_HOME}/bin/sys"
 source "${HI_CLI_HOME}/bin/colors"
 
-function log_debug() {
-	if [ "${hi_debug}" == "hi_debug" ] || [ "${hi_debug}" == "yes" ]; 
-	then
-		${ECHO_E} "${TEAL}[hi-cli] [LINE: ${BASH_LINENO[*]}] $1 ${ENDCOLOR}"	
-	fi
-}
-
 function log_base()
 {
 	${ECHO_E} "$2[hi-cli] $1 ${ENDCOLOR}"
+}
+
+function log_debug() {
+	color=$2
+	if [ "${color}" == "" ]; then
+		color="${DARKTEAL}"
+	fi
+
+	if [ "${hi_debug}" == "hi_debug" ] || [ "${hi_debug}" == "yes" ]; 
+	then
+		file_name=$(echo ${BASH_SOURCE[1]##*/})
+		line_number=$(echo ${BASH_LINENO[*]} | awk '{print $1}')	
+		log_base "[line: ${line_number}] [file: ${file_name}] $1" "${color}"
+	else
+		log_base "$1" "${color}"
+	fi
 }
 
 function log_info()
@@ -54,11 +63,6 @@ function log_warn()
 
 function log_error()
 {
-	if [ "${hi_debug}" == "hi_debug" ] || [ "${hi_debug}" == "yes" ]; 
-	then
-	  log_base "[LINE: ${BASH_LINENO[*]}] $1" "${RED}"
-	else
-	  log_base "$1" "${DARKRED}"
-	fi
+	log_debug "$1" "${RDARKREDED}"
 }
 
