@@ -53,7 +53,7 @@ function parse_json() {
   done
   log_debug ${keys}
 
-  value=$(echo $2 | python -c "import sys, json; print json.load(sys.stdin)${keys}" )
+  value=$(echo $2 | python -c "import sys, json; sys.tracebacklimit = 0; print json.load(sys.stdin)${keys}" )
   log_debug ${value}
   
   eval $1="\${value}"
