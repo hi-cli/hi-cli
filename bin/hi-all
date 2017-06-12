@@ -53,7 +53,7 @@ if [ -f ${filter} ]; then
   fi
 
 else
-  log_error "Filter is not fould"
+  log_error "Filter is not found"
   exit
 fi
 
