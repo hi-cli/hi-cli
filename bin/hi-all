@@ -39,21 +39,34 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
 source "${HI_CLI_HOME}/bin/usage"
+source "${HI_CLI_HOME}/bin/utils"
 
 modules=""
 
-filter="${HI_CLI_HOME}/modules/${module_name}/filter"
+module_conf="${HI_CLI_HOME}/modules/${module_name}/hi.conf"
+if [ -f "${module_conf}" ]; then
+  source "${module_conf}"
+fi
 #log_debug "${filter}"
-if [ -f ${filter} ]; then
-  source ${filter}
-  find_modules modules
+if [ "${filters}" != "" ]; then
+  modules=""
+  array=($filters)
+  echo filters: $filters
+  for f in "${array[@]}" 
+  do
+    log_debug "ef: ${f}"
+    find_modules m "${f}"
+    modules="${modules} ${m}"
+    log_debug "modules: ${modules}"
+  done
+
   if [ "${modules}" == "" ]; then
     log_info "No module found!"
     exit
   fi
 
 else
-  log_error "Filter is not found"
+  log_error "filters is not found in hi.conf"
   exit
 fi
 

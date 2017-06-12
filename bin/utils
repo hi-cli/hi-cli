@@ -104,3 +104,39 @@ function is_connected() {
   res=$(echo $(telnet ${host} ${port} &) | grep "Escape character is '^]'." | wc -l)
   [ ${res} == 1 ] && echo "yes" || echo "no" 
 }
+
+function find_modules() {
+  file_extension="$1"
+  log_debug "find_modules in cicd: $PWD"
+  result=$(find . -maxdepth 2 -name "${file_extension}" | { while read module; do
+      
+      module=${module%:*}
+      module=${module/.\//}
+      module=${module/\/${file_extension}/}
+      if [ "${unlimited}" == "unlimited" ] || [ $(echo "${module}" | grep "\/" | wc -l) == 0 ]; then
+          echo ${SPACE}${module}
+      fi
+  done
+  })
+
+  log_debug "result: ${result}"
+
+  eval " $1="'"'"$result"'"'" "
+}
+
+
+function find_modules() {
+    
+    result=$(find . -type d -name ".git" | { while read module; do
+        module=${module%:*}
+        module=${module/.\//}
+        module=${module/\/.git/}
+        if [ "${unlimited}" == "unlimited" ] || [ $(echo "${module}" | grep "\/" | wc -l) == 0 ]; then
+            echo ${SPACE}${module}
+        fi
+    done
+        
+    })
+
+    eval " $1="'"'"$result"'"'" "
+}
