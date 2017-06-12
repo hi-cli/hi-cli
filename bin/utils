@@ -106,8 +106,8 @@ function is_connected() {
 }
 
 function find_modules() {
-  file_extension="$1"
-  log_debug "find_modules in cicd: $PWD"
+  file_extension="$2"
+  log_debug "find_modules in $PWD, file_extension: ${file_extension}"
   result=$(find . -maxdepth 2 -name "${file_extension}" | { while read module; do
       
       module=${module%:*}
@@ -119,24 +119,7 @@ function find_modules() {
   done
   })
 
-  log_debug "result: ${result}"
+  # log_debug "result: ${result}"
 
   eval " $1="'"'"$result"'"'" "
-}
-
-
-function find_modules() {
-    
-    result=$(find . -type d -name ".git" | { while read module; do
-        module=${module%:*}
-        module=${module/.\//}
-        module=${module/\/.git/}
-        if [ "${unlimited}" == "unlimited" ] || [ $(echo "${module}" | grep "\/" | wc -l) == 0 ]; then
-            echo ${SPACE}${module}
-        fi
-    done
-        
-    })
-
-    eval " $1="'"'"$result"'"'" "
 }
