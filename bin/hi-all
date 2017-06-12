@@ -74,8 +74,10 @@ function main() {
     module_cmd=${module_cmd/unlimited/}
   fi
 
-  #log_debug "modules: ${modules}"
-  for module in $modules 
+  module_cmd=${module_cmd/hi_debug/}
+
+  log_debug "modules: ${modules}"
+  for module in ${modules} 
   do
     log_info "=> ${module}"
     pushd "${module}" > /dev/null
