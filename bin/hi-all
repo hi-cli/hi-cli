@@ -108,6 +108,11 @@ function main() {
     pushd "${module}" > /dev/null
     
     ${module_cmd}
+
+    if [ $? != 0 ]; then
+      log_error "Faild: ${module_cmd}"
+      exit
+    fi
     
     popd > /dev/null
   done
