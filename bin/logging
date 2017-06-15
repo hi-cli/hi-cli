@@ -33,6 +33,7 @@ function log_base()
 function log_debug() {
 	color=$2
 	level=$3
+	show_log=$4
 	if [ "${color}" == "" ]; then
 		color="${DARKTEAL}"
 	fi
@@ -45,8 +46,9 @@ function log_debug() {
 		file_name=$(echo ${BASH_SOURCE[1]##*/})
 		line_number=$(echo ${BASH_LINENO[*]} | awk '{print $1}')	
 		log_base "[line: ${line_number}] [file: ${file_name}] ${level} ${ENDCOLOR} $1" "${color}"
-	else
-		log_base "${level} $1" "${color}"	
+	elif [ "${show_log}" == "show_log" ]; 
+	then
+		log_base "${level} $1" "${color}"
 	fi
 }
 
@@ -67,6 +69,6 @@ function log_warn()
 
 function log_error()
 {
-	log_debug "$1" "${RDARKREDED}" "[error]"
+	log_debug "$1" "${RDARKREDED}" "[error]" "show_log"
 }
 
