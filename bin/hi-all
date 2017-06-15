@@ -102,6 +102,10 @@ function main() {
   fi
   log_debug "module_cmd: ${module_cmd}"
 
+  if [ "${apps}" != "" ]; then
+    modules="${apps}"
+  fi
+
   for module in ${modules} 
   do
     log_info "=> ${module}"
