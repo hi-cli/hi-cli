@@ -48,7 +48,7 @@ function run() {
     module_url=${url}
     log_debug "url: ${url}"
     if [ "${module_url}" == "" ]; then
-      module_url="${default_host_prefix}${hi_package}"
+      module_url="${default_host_prefix}${hi_package}.git"
       if [ $(is_url_available "${module_url}") == "no" ]; then
         package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
         parse_json module_url "${package_json_file}" modules ${hi_package} url
