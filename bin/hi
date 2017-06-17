@@ -47,6 +47,11 @@ arg5=$5
 
 source "${HI_CLI_HOME}/bin/utils"
 
+function run() {
+    eval $1="1"
+    eval $2="unimplemented"
+}
+
 function import() {
   imported_source="$1"
   if [ -f "${imported_source}" ];
@@ -94,13 +99,8 @@ source "${HI_CLI_HOME}/bin/sys"
 #log_info "Running: ${CMD_LINE}"
 hi_app="hi"
 
-function run() {
-    eval $1="1"
-    eval $2="unimplemented"
-}
-
 function main() {
-
+  log_debug "hi ${module_name}"
   # below import must is in order
   import "${module_dir}/init"
   import "${default_module}"
@@ -109,6 +109,8 @@ function main() {
   result=0
   cli=${cli}
   run result cli
+
+  log_debug "$result $cli"
   if [ "${result}" == "1" ] && [ "${cli}" == "unimplemented" ]; then
     if [ "${hi_alias}" != "" ]; then
       log_debug "cmd_line: ${CMD_LINE}"

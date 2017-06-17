@@ -29,6 +29,7 @@ source "${HI_CLI_HOME}/bin/utils"
 source "${HI_CLI_HOME}/bin/init-app"
 
 function run() {
+  log_debug "hi init"
   result=1
   if [ "${arg2}" == "." ] || [ "${arg2}" == "" ];
   then
@@ -36,6 +37,8 @@ function run() {
   else
     new_workspace="${PWD}/${arg2}"
   fi
+
+  new_workspace=${new_workspace/hi_debug/}
 
   get_dir_from_path project_name "${new_workspace}"
   get_folder_from_path project_name "${project_name}"
