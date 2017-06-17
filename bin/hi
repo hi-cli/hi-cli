@@ -45,12 +45,50 @@ arg3=$3
 arg4=$4
 arg5=$5
 
+source "${HI_CLI_HOME}/bin/utils"
+
+function import() {
+  imported_source="$1"
+  if [ -f "${imported_source}" ];
+  then
+    # echo "${imported_source}"
+    source "${imported_source}"
+  fi
+}
+
+export working_dir=$PWD
+
+import "${HI_CLI_HOME}/bin/${module_name}/init"
+
+default_module="${HI_CLI_HOME}/bin/${module_name}/${submodule_name}"
+
+module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}"
+if [ "${command_name}" != "" ]; 
+then
+  sub_module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}/${command_name}"
+  if [ -f "${sub_module_path}" ]; 
+  then
+    module_path="${sub_module_path}"
+  fi
+fi
+export module_path
+
+get_dir_from_path module_dir "${module_path}"
+export module_dir
+
+get_file_from_path module_command "${module_path}"
+export module_command
+
+import "${HI_CLI_HOME}/bin/${module_name}/hi.conf"
+import "${module_dir}/hi.conf"
+import "${HOME}/.${module_name}/hi.conf"
+import "${PWD}/hi.conf"
+
 source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
 source "${HI_CLI_HOME}/bin/usage"
-source "${HI_CLI_HOME}/bin/utils"
 source "${HI_CLI_HOME}/bin/sys"
 
 #log_info "Running: ${CMD_LINE}"
@@ -61,44 +99,9 @@ function run() {
     eval $2="unimplemented"
 }
 
-function import() {
-  imported_source="$1"
-  if [ -f "${imported_source}" ];
-  then
-    log_debug "${imported_source}"
-    source "${imported_source}"
-  fi
-}
-
 function main() {
-  export working_dir=$PWD
-
-  import "${HI_CLI_HOME}/bin/${module_name}/init"
-  
-  default_module="${HI_CLI_HOME}/bin/${module_name}/${submodule_name}"
-
-  module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}"
-  if [ "${command_name}" != "" ]; 
-  then
-    sub_module_path="${HI_CLI_HOME}/modules/${module_name}/${submodule_name}/${command_name}"
-    if [ -f "${sub_module_path}" ]; 
-    then
-      module_path="${sub_module_path}"
-    fi
-  fi
-  export module_path
-
-  get_dir_from_path module_dir "${module_path}"
-  export module_dir
-
-  get_file_from_path module_command "${module_path}"
-  export module_command
 
   # below import must is in order
-  import "${HI_CLI_HOME}/bin/${module_name}/hi.conf"
-  import "${module_dir}/hi.conf"
-  import "${HOME}/.${module_name}/hi.conf"
-  import "${PWD}/hi.conf"
   import "${module_dir}/init"
   import "${default_module}"
   import "${module_path}"
