@@ -51,10 +51,10 @@ function log_debug() {
 		if [ "${line_number}" == "" ]; then
 			line_number=$(echo ${BASH_LINENO[*]} | awk '{print $1}')
 		fi	
-		log_base "[line: ${line_number}] [file: ${file_name}] ${level} ${ENDCOLOR} $1" "${color}"
+		log_base "[line: ${line_number}] [file: ${file_name}] ${level} $1" "${color}"
 	elif [ "${show_log}" == "yes" ]; 
 	then
-		log_base "${level} ${color}" "${color}"
+		log_base "${level} $1" "${color}"
 	fi
 }
 

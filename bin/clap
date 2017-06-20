@@ -49,12 +49,10 @@ while [ "$#" != "0" ]; do
         shift
     else
         if [ "$#" != "0" ]; then
-            if [[ "$1" =~ ^[A-Za-z0-9]*$ ]]
+            if [[ "$1" =~ ^[A-Za-z0-9_]*$ ]]
             then
-                log_debug "$1: valid"
+                # echo "$1: valid"
                 export eval "$(echo $1)"="$1"
-            else
-                log_debug "$1: invalid"
             fi
             CMD_LINE="$CMD_LINE $1"
             shift

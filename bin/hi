@@ -110,7 +110,8 @@ function main() {
   cli=${cli}
   run result cli
 
-  log_debug "$result $cli"
+  log_debug "result: ${result}"
+  log_debug "cli: ${cli}"
   if [ "${result}" == "1" ] && [ "${cli}" == "unimplemented" ]; then
     if [ "${hi_alias}" != "" ]; then
       log_debug "cmd_line: ${CMD_LINE}"
@@ -126,9 +127,9 @@ function main() {
   fi
 
   if [ ${result} == 0 ]; then
-    log_info "${cli} : success"
+    log_info "success: ${cli}"
   else
-    log_error "${cli} : fail" "no-debug"
+    log_error "failed: ${cli}"
   fi
   
   exit 0
