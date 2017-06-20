@@ -24,6 +24,13 @@
 source "${HI_CLI_HOME}/bin/sys"
 ###############################################################################
 # Common variables 
+
+export COLOR_PREFIX="\e"
+export ECHO_E="echo -e"
+if [ "$OS" == "Darwin" ]; then
+    export COLOR_PREFIX="\033"
+fi
+
 export DARKRED="\033[1;31m"
 export RED="\033[3;31m"
 export DARKGREEN="\033[1;32m"
@@ -54,12 +61,3 @@ export E_PURPLE="${COLOR_PREFIX}[3;35m"
 export E_DARKTEAL="${COLOR_PREFIX}[1;36m"
 export E_TEAL="${COLOR_PREFIX}[3;36m"
 export E_ENDCOLOR="${COLOR_PREFIX}[3;0m"
-
-export COLOR_PREFIX="\e"
-export ECHO_E="echo"
-if [ "$OS" == "Darwin" ]; then
-    export COLOR_PREFIX="\033"
-    export ECHO_E="echo -e"
-elif [ "$OS" == "MSYS" ] || [ "$OS" == "Linux" ]; then
-    export ECHO_E="echo -e"
-fi
