@@ -32,16 +32,13 @@ source "${HI_CLI_HOME}/bin/logging"
 function run() {
   hi_package="${arg3}"
   result=1
-  if [ "${hi_package}" != "" ];
-  then
-    
-
+  if [ "${hi_package}" != "" ]; then
     if [ "${force}" == "force" ];
     then
       rm -rf "${HI_CLI_HOME}/modules/${hi_package}"
     fi
 
-    module_url="${default_host_prefix}${hi_package}"
+    module_url="${hi_cli_host}/hi-cli/hi-${hi_package}.git"
     if [ $(is_url_available "${module_url}") == "no" ]; then
       package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
       parse_json module_url "${package_json_file}" modules ${hi_package} url
