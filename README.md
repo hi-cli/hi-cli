@@ -17,7 +17,7 @@ hi-cli is installed by running one of the following commands in your terminal. Y
 #### via curl
 
 ```shell
-bash -c "$(curl -fsSL bash -c "$(curl -fsSL https://raw.githubusercontent.com/hi-cli/hi-cli/master/bin/install)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/hi-cli/hi-cli/master/bin/install)"
 ```
 
 #### via wget
