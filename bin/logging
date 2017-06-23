@@ -27,7 +27,7 @@ source "${HI_CLI_HOME}/bin/colors"
 
 function log_base()
 {
-	${ECHO_E} "${DARKGREEN}[hi-cli]${ENDCOLOR}$2 $1 ${ENDCOLOR}"
+	${ECHO_E} "${DARKGREEN}[hi-cli]${ENDCOLOR} $2[$(date +"%Y-%m-%d %H:%M:%S")] $1 ${ENDCOLOR}"
 }
 
 function log_debug() {
