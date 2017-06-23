@@ -100,7 +100,7 @@ source "${HI_CLI_HOME}/bin/sys"
 hi_app="hi"
 
 function main() {
-  log_debug "hi ${module_name}"
+  log_info "hi ${module_name}"
   # below import must is in order
   import "${module_dir}/init"
   import "${default_module}"
