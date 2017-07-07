@@ -55,7 +55,7 @@ cat > "$1" <<_EOF_
 # Updated: $(date)
 ###############################################################################
 
-# TODO: added your config below
+# TODO: add your config below
 project="$2"
 app="$3"
 
