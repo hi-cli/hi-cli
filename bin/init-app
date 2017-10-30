@@ -57,7 +57,7 @@ cat > "$1" <<_EOF_
 
 # TODO: add your config below
 project="$2"
-cluster="$4"
+$4
 app="$3"
 
 _EOF_
@@ -78,11 +78,10 @@ function init_app() {
   log_debug "project_name: $project_name"
   log_debug "app_name: $app_name"
   
-  if [ "${cluster}" == "" ]; then
-    cluster=moses
+  if [ "${cluster}" != "" ]; then
+    cluster_field="cluster="'"${cluster}"'" "
   fi
-
-  create_new_config "${new_workspace}/hi.conf" "${project_name}" "${app_name}" "${cluster}"
+  create_new_config "${new_workspace}/hi.conf" "${project_name}" "${app_name}" "${cluster_field}"
 
   if [ "${git}" != "" ] && [ ! -d ".git" ] && [ $(which git | grep git | wc -l) == 1 ]; then
     git init

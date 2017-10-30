@@ -35,9 +35,14 @@ function run() {
   new_workspace="${PWD}"
   new_workspace=${new_workspace/hi_debug/}
 
+  log_debug "new_workspace: ${new_workspace}"
+  log_debug "project: ${project}"
+
   get_dir_from_path project_name "${new_workspace}"
   get_folder_from_path project_name "${project_name}"
-  if [ "${project}" != "${project_name}"  ]; then
+  log_debug "project_name: ${project_name}"
+
+  if [ "${project}" != "${project_name}" ] && [ "${project}" != "" ]; then
     project_name=${project}
   fi 
   log_debug "project_name: ${project_name}"
