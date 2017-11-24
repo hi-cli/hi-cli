@@ -29,6 +29,8 @@ source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/init-app"
+
+parser="${HI_CLI_HOME}/utils/parser.py"
 ###############################################################################
 function run() {
   hi_package="${arg3}"
@@ -51,7 +53,8 @@ function run() {
       module_url="${hi_cli_host}/hi-cli/hi-${hi_package}.git"
       if [ $(is_url_available "${module_url}") == "no" ]; then
         package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
-        parse_json module_url "${package_json_file}" modules ${hi_package} url
+        # parse_json module_url "${package_json_file}" modules ${hi_package} url
+        module_url=$(python ${parser} file "${HI_CLI_HOME}/conf/package.json" modules ${hi_package} url)
       fi
     fi
     log_debug "module_url: ${module_url}"

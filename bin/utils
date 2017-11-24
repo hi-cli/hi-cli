@@ -38,27 +38,6 @@ function prompt_yesorno ()
     done
 }
 
-function parse_json() {
-  export PYTHONIOENCODING=utf8
-  keys=
-  args=("$@")
-  
-  for((i=0;i<$#;i++));
-  do
-    if [ $i != 0 ] && [ $i != 1 ];
-    then
-      keys="${keys}['${args[$i]}']"
-      log_debug "$i : ${args[$i]}"
-    fi
-  done
-  log_debug ${keys}
-
-  value=$(echo $2 | python -c "import sys, json; sys.tracebacklimit = 0; print json.load(sys.stdin)${keys}" )
-  log_debug ${value}
-  
-  eval $1="\${value}"
-}
-
 function get_file_from_path() {
   src=$2
   eval $1="${src##*/}"

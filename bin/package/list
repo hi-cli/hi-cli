@@ -28,11 +28,14 @@
 source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
+
+parser="${HI_CLI_HOME}/utils/parser.py"
 ###############################################################################
 function run() {
 
   package_json_file=$(cat ${HI_CLI_HOME}/conf/package.json)
-  parse_json module_list "${package_json_file}" modules
+  # parse_json module_list "${package_json_file}" modules
+  module_list=$(python ${parser} file "${HI_CLI_HOME}/conf/package.json" modules)
   log_trace "module_list: ${module_list}"
 
   cli="package list"
