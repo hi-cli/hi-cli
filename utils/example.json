@@ -1,0 +1,8 @@
+{
+  "app": 
+  {
+    "name": "example",
+    "role": "query",
+    "cluster-name": "moses"
+  }
+}
