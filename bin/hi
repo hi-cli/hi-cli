@@ -107,6 +107,10 @@ function main() {
   import "${default_module}"
   import "${module_path}"
 
+  if [ "${hide_version}" == "" ]; then
+    show_version
+  fi
+  
   result=0
   cli=${cli}
   run result cli
@@ -136,7 +140,4 @@ function main() {
   exit 0
 }
 
-if [ "${hide_version}" == "" ]; then
-  show_version
-fi
 main
