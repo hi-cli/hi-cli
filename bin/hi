@@ -128,7 +128,8 @@ function main() {
     fi
 
     show_hi_usage
-    exit 1
+
+    [[ "${arg1}" == "" ]] && exit 0 || exit 1
   fi
 
   if [ ${result} == 0 ]; then
