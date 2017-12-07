@@ -110,7 +110,7 @@ function main() {
   if [ "${hide_version}" == "" ]; then
     show_version
   fi
-  
+
   result=0
   cli=${cli}
   run result cli
@@ -128,7 +128,7 @@ function main() {
     fi
 
     show_hi_usage
-    exit
+    exit 1
   fi
 
   if [ ${result} == 0 ]; then
