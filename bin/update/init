@@ -29,17 +29,56 @@ source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
-function run() {
-  cli="git pull"
-
+function update_hi_cli() {
   pushd "${HI_CLI_HOME}" > /dev/null
   pwd
-  ${cli}
+  git pull
 
   result=$?
 
   popd > /dev/null
 
+  return $result
+}
+
+function update_package() {
+  package=$1
+  pushd "${HI_CLI_HOME}/modules/${package}" > /dev/null
+  pwd
+  git pull
+
+  result=$?
+
+  popd > /dev/null
+
+  return $result
+}
+
+
+function update_all() {
+
+  update_hi_cli
+
+  ls /usr/local/hi-cli/modules | while read package; do
+    update_package $package
+  done
+
+  result=$?
+
+  return $result
+}
+
+function run() {
+  cli="hi update"
+
+  if [ "${arg2}" == "all" ]; then
+    result=$(update_hi_all)
+  elif [ "${arg2}" != "" ]; then
+    result=$(update_hi_package $arg2)
+  else
+    result=$(update_hi_cli)
+  fi
+  
   eval $1="\${result}"
   eval $2="\${cli}"
 }
