@@ -30,13 +30,13 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function do_update() {
-  log_info "updating ...\n"
+  log_info "updating ..."
   git branch --set-upstream-to=origin/$(git branch | grep "*" | sed "s/* //g")
   git pull
 }
 
 function update_hi_cli() {
-  log_info "update hi-cli ...\n"
+  log_info "update hi-cli ..."
 
   pushd "${HI_CLI_HOME}" > /dev/null
   pwd
@@ -51,7 +51,7 @@ function update_hi_cli() {
 }
 
 function update_package() {
-  log_info "update hi-cli package $1 ...\n"
+  log_info "update hi-cli package $1 ..."
   package=$1
   pushd "${HI_CLI_HOME}/modules/${package}" > /dev/null
   pwd
@@ -89,7 +89,7 @@ function run() {
     update_hi_cli
   fi
   result=$?
-  
+
   eval $1="\${result}"
   eval $2="\${cli}"
 }
