@@ -89,8 +89,7 @@ function run() {
     update_hi_cli
   fi
   result=$?
-
-  echo result: $result
+  
   eval $1="\${result}"
   eval $2="\${cli}"
 }
