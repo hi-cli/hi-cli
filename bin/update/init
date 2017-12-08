@@ -29,10 +29,19 @@ source "${HI_CLI_HOME}/bin/colors"
 source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
+function do_update() {
+  log_info "updating ...\n"
+  git branch --set-upstream-to=origin/$(git branch | grep "*" | sed "s/* //g")
+  git pull
+}
+
 function update_hi_cli() {
+  log_info "update hi-cli ...\n"
+
   pushd "${HI_CLI_HOME}" > /dev/null
   pwd
-  git pull
+
+  do_update
 
   result=$?
 
@@ -42,10 +51,11 @@ function update_hi_cli() {
 }
 
 function update_package() {
+  log_info "update hi-cli package $1 ...\n"
   package=$1
   pushd "${HI_CLI_HOME}/modules/${package}" > /dev/null
   pwd
-  git pull
+  do_update
 
   result=$?
 
@@ -72,13 +82,15 @@ function run() {
   cli="hi update"
 
   if [ "${arg2}" == "all" ]; then
-    result=$(update_hi_all)
+    update_all
   elif [ "${arg2}" != "" ]; then
-    result=$(update_hi_package $arg2)
+    update_package $arg2
   else
-    result=$(update_hi_cli)
+    update_hi_cli
   fi
-  
+  result=$?
+
+  echo result: $result
   eval $1="\${result}"
   eval $2="\${cli}"
 }
