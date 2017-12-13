@@ -58,10 +58,14 @@ fi
 
 ###############################################################################
 function main() {
-    if [ "${arg3}" != "" ]; then
+    log_debug "hi install $arg2 $arg3"
+    if [ "${arg2}" != "" ]; then
+        log_debug "install package $arg2 ..."
         hi package install ${arg3} hide_version
         exit $?
     fi
+
+    log_debug "install hi-cli ..."
 
     if which tput >/dev/null 2>&1; then
       ncolors=$(tput colors)
