@@ -33,6 +33,7 @@ source "${HI_CLI_HOME}/bin/init-app"
 parser="${HI_CLI_HOME}/utils/parser.py"
 ###############################################################################
 function run() {
+  log_debug "install hi-cli package ..."
   hi_package="${arg3}"
   result=1
   
@@ -58,13 +59,18 @@ function run() {
       fi
     fi
     log_debug "module_url: ${module_url}"
-
-    # TODO: set default url and check if it's exist
-    
-    cli="git clone ${module_url} ${hi_package}"
-    pushd "${HI_CLI_HOME}/modules" > /dev/null
-    ${cli}
-    result=$?
+    # update only if it exist
+    if [ -d "${HI_CLI_HOME}/modules/${hi_package}" ]; then
+      cli="git pull"
+      pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
+      ${cli}
+      result=$?
+    else
+      cli="git clone ${module_url} ${hi_package}"
+      pushd "${HI_CLI_HOME}/modules" > /dev/null
+      ${cli}
+      result=$?
+    fi
     if [ "${ver}" != "" ]; then
       pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
       git checkout ${ver}
@@ -80,8 +86,7 @@ function run() {
     popd > /dev/null
   fi
 
-  eval $1="\${result}"
-  eval $2="\${cli}"
+  return ${result}
 }
 
 ###############################################################################
