@@ -59,7 +59,10 @@ fi
 ###############################################################################
 function main() {
     log_debug "hi install $arg2 $arg3"
-    if [ "${arg2}" != "" ]; then
+    if [ "${arg2}" != "" ] && [ -f "${HI_CLI_HOME}/bin/install/init"]; then
+        source "${HI_CLI_HOME}/bin/colors"
+        source "${HI_CLI_HOME}/bin/clap"
+        source "${HI_CLI_HOME}/bin/logging"
         log_debug "install package $arg2 ..."
         hi package install ${arg3} hide_version
         exit $?
