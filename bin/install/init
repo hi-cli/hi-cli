@@ -58,10 +58,8 @@ fi
 
 ###############################################################################
 function main() {
-    echo $arg1 $arg2 $arg3
     if [ "${arg2}" != "" ]; then
-        echo "install package $arg2 ..."
-        hi package install ${arg2} hide_version ${force}
+        hi package install ${arg2}
         exit $?
     fi
 
