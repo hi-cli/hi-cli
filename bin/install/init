@@ -58,10 +58,10 @@ fi
 
 ###############################################################################
 function main() {
-    
-    if [ "${arg2}" != "" ] && [ -f "${HI_CLI_HOME}/bin/install/init"]; then
+    echo $arg1 $arg2 $arg3
+    if [ "${arg2}" != "" ]; then
         echo "install package $arg2 ..."
-        hi package install ${arg3} hide_version
+        hi package install ${arg2} hide_version ${force}
         exit $?
     fi
 
