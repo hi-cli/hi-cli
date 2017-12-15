@@ -32,8 +32,8 @@ source "${HI_CLI_HOME}/bin/logging"
 function do_update() {
   log_info "updating ..."
   git branch --set-upstream-to=origin/$(git branch | grep "*" | sed "s/* //g")
-  git pull
   git reset --hard
+  git pull
   git checkout .
 }
 
