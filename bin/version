@@ -44,8 +44,8 @@ ${DARKBLUE}Version: $HI_CLI_VERSION Author: John Deng Email: john.deng@outlook.c
 
 function show_version()
 {
-    export HI_CLI_VERSION='1.1.1'
-    export HI_CLI_UPDATED_DATE='2017-12-08'
+    export HI_CLI_VERSION='1.1.2'
+    export HI_CLI_UPDATED_DATE='2017-12-15'
 
     show_app_info
 }

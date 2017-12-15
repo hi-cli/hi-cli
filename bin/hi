@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 # Project: hi-cli
 # Description: The cross platform development toolkit - hi-cli

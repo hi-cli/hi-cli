@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 # Project: hi-cli
 # Description: The cross platform development toolkit - hi-cli
@@ -37,7 +37,7 @@ function create_new_script() {
   log_debug "create_new_script"
 
   cat > "$1" <<_EOF_
-#!/bin/bash
+#!/usr/bin/env bash
 ###############################################################################
 # Project: hi-cli
 # Description: The cross platform development toolkit - hi-cli
