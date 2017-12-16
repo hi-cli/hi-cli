@@ -96,6 +96,7 @@ source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
 source "${HI_CLI_HOME}/bin/usage"
 source "${HI_CLI_HOME}/bin/sys"
+source "${HI_CLI_HOME}/modules/moses/utils/input"
 
 #log_info "Running: ${CMD_LINE}"
 hi_app="hi"
