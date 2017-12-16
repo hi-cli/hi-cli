@@ -34,6 +34,7 @@ function run() {
 
   new_workspace="${PWD}"
   new_workspace=${new_workspace/hi_debug/}
+  new_workspace=${new_workspace/debug/}
 
   log_debug "new_workspace: ${new_workspace}"
   log_debug "project: ${project}"

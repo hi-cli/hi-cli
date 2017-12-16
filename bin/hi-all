@@ -92,6 +92,7 @@ function main() {
   fi
 
   module_cmd=${module_cmd/hi_debug/}
+  module_cmd=${module_cmd/debug/}
 
   cmd=$(echo "${module_cmd}" | awk '{print $1}')
   log_debug "cmd: ${cmd}"

@@ -43,7 +43,7 @@ function log_debug() {
 		level="[debug]"
 	fi
 
-	if [ "${hi_debug}" == "hi_debug" ] || [ "${hi_debug}" == "yes" ]; 
+	if [ "${hi_debug}" == "hi_debug" ] || [ "${debug}" == "debug" ]; 
 	then
 		if [ "${file_name}" == "" ]; then
 			file_name=$(echo ${BASH_SOURCE[1]##*/})
