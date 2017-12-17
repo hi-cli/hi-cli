@@ -30,20 +30,18 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function do_update() {
-  log_info "Please wait ..."
-
   l_app_dir=$1
 
   pushd "${l_app_dir}" > /dev/null
   pwd
 
   l_branch=$(git branch | grep "*" | sed "s/* //g")
-  git branch --set-upstream-to=origin/${l_branch}
+  
   git fetch
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
     get_file_from_path l_app_name "$0"
     if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
-      log_info "Prepare to update ${l_app_name} ..."
+      log_info "Prepare to update hi-cli ..."
       cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
       chmod 755 /tmp/hi-update
       export hide_version=hide_version
@@ -51,8 +49,11 @@ function do_update() {
       exec /tmp/hi-update update 
       exit 0
     fi
+
+    git branch --set-upstream-to=origin/${l_branch}
     log_info "Found new version, updating ..."
     git pull --force
+
   fi
 
   result=$?
@@ -61,7 +62,6 @@ function do_update() {
 }
 
 function update_hi_cli() {
-  log_info "update hi-cli ..."
 
   do_update "${HI_CLI_HOME}"
 
