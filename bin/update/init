@@ -31,41 +31,47 @@ source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function do_update() {
   log_info "Please wait ..."
-  git branch --set-upstream-to=origin/$(git branch | grep "*" | sed "s/* //g")
+
+  l_app_dir=$1
+
+  pushd "${l_app_dir}" > /dev/null
+  pwd
+
+  l_branch=$(git branch | grep "*" | sed "s/* //g")
+  git branch --set-upstream-to=origin/${l_branch}
   git fetch
-  if (( $(git diff --name-only origin/master | wc -l) > 0 )); then
+  if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
     log_info "Found new version, updating ..."
+    
+    if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ ${} ]; then
+      log_debug "update hi-cli"
+      cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
+      chmod 755 /tmp/hi-update
+      exec /tmp/hi-update update debug 
+      exit 0
+    fi
     git pull --force
   fi
+
+  result=$?
+
+  popd > /dev/null
 }
 
 function update_hi_cli() {
   log_info "update hi-cli ..."
 
-  pushd "${HI_CLI_HOME}" > /dev/null
-  pwd
+  do_update "${HI_CLI_HOME}"
 
-  do_update
-
-  result=$?
-
-  popd > /dev/null
-
-  return $result
+  return $?
 }
 
 function update_package() {
   log_info "update hi-cli package $1 ..."
-  package=$1
-  pushd "${HI_CLI_HOME}/modules/${package}" > /dev/null
-  pwd
-  do_update
 
-  result=$?
+  do_update "${HI_CLI_HOME}/modules/${package}"
 
-  popd > /dev/null
-
-  return $result
+  return $?
 }
 
 
