@@ -42,12 +42,14 @@ function do_update() {
   git fetch
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
     log_info "Found new version, updating ..."
-    
-    if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "$0" != "/tmp/hi-update" ]; then
-      log_info "update hi-cli: $0 $@ "
+    get_file_from_path l_app_name "$0"
+    if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
+      log_info "prepare to update hi-cli ..."
       cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
       chmod 755 /tmp/hi-update
-      exec /tmp/hi-update update debug 
+      export hide_version=hide_version
+      export debug=debug
+      exec /tmp/hi-update update 
       exit 0
     fi
     git pull --force
