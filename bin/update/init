@@ -44,7 +44,7 @@ function do_update() {
     log_info "Found new version, updating ..."
     
     if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "$0" != "/tmp/hi-update" ]; then
-      log_debug "update hi-cli: $0 $@"
+      log_info "update hi-cli: $0 $@"
       cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
       chmod 755 /tmp/hi-update
       exec /tmp/hi-update update debug 
