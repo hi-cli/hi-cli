@@ -41,7 +41,6 @@ function do_update() {
   git branch --set-upstream-to=origin/${l_branch}
   git fetch
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
-    log_info "Found new version, updating ..."
     get_file_from_path l_app_name "$0"
     if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
       log_info "Prepare to update hi-cli ..."
@@ -52,6 +51,7 @@ function do_update() {
       exec /tmp/hi-update update 
       exit 0
     fi
+    log_info "Found new version, updating ..."
     git pull --force
   fi
 
