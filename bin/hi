@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 # Author: John Deng (john.deng@outlook.com)
-# Updated: 2017-02-11
+# Updated: 2017-12-17
 ###############################################################################
 
 if [ "${HI_CLI_HOME}" == "" ]; then
