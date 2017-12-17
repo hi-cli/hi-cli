@@ -30,17 +30,18 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function do_update() {
-  l_app_dir=$1
+  l_app_name=$1
+  l_app_dir=$2
 
-  pushd "${l_app_dir}" > /dev/null
+  pushd "${l_app_dir}" > /dev/null 2>&1
   log_debug "$PWD"
 
   l_branch=$(git branch | grep "*" | sed "s/* //g")
   
-  git fetch &> /dev/null
+  git fetch > /dev/null 2>&1
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
-    get_file_from_path l_app_name "$0"
-    if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
+    get_file_from_path running_app_name "$0"
+    if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${running_app_name}" != "hi-update" ]; then
       log_info "Prepare to update hi-cli ..."
       cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
       chmod 755 /tmp/hi-update
@@ -50,19 +51,23 @@ function do_update() {
     fi
 
     log_info "Found new version, updating ..."
-    git branch --set-upstream-to=origin/${l_branch} &> /dev/null
-    git pull --force &> /dev/null
-
+    git branch --set-upstream-to=origin/${l_branch} > /dev/null 2>&1
+    git pull --force > /dev/null 2>&1
+    result=$?
+    log_info "${l_app_name} is up to date"
+  else
+    log_info "${l_app_name} is already the latest version"
+    result=$?
   fi
 
-  result=$?
+  popd > /dev/null 2>&1
 
-  popd > /dev/null
+  return ${result}
 }
 
 function update_hi_cli() {
 
-  do_update "${HI_CLI_HOME}"
+  do_update "hi-cli" "${HI_CLI_HOME}"
 
   return $?
 }
@@ -70,7 +75,7 @@ function update_hi_cli() {
 function update_package() {
   log_info "update hi-cli package $1 ..."
 
-  do_update "${HI_CLI_HOME}/modules/${package}"
+  do_update "$1" "${HI_CLI_HOME}/modules/${package}" 
 
   return $?
 }

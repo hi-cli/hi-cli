@@ -61,20 +61,20 @@ function run() {
     log_debug "module_url: ${module_url}"
     # update only if it exist
     if [ -d "${HI_CLI_HOME}/modules/${hi_package}" ]; then
-      cli="git pull"
-      pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
-      ${cli}
+      cli="${hi_package} is already installed"
+      pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null 2>&1
+      git pull > /dev/null 2>&1
       result=$?
     else
-      cli="git clone ${module_url} ${hi_package}"
-      pushd "${HI_CLI_HOME}/modules" > /dev/null
-      ${cli}
+      cli="install ${hi_package}"
+      pushd "${HI_CLI_HOME}/modules" > /dev/null 2>&1
+      git clone ${module_url} ${hi_package} > /dev/null 2>&1
       result=$?
     fi
     if [ "${ver}" != "" ]; then
-      pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null
-      git checkout ${ver}
-      popd > /dev/null
+      pushd "${HI_CLI_HOME}/modules/${hi_package}" > /dev/null 2>&1
+      git checkout ${ver} > /dev/null 2>&1
+      popd > /dev/null 2>&1
     fi
     hi_module_install="${HI_CLI_HOME}/modules/${hi_package}/.install"
     if [ ${result} == 0 ] && [ -f "${hi_module_install}"  ]; then
@@ -83,7 +83,7 @@ function run() {
       result=$?
     fi
 
-    popd > /dev/null
+    popd > /dev/null 2>&1
   fi
 
   return ${result}

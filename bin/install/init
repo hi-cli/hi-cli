@@ -125,7 +125,7 @@ function main() {
         exit
     fi
     printf "Please wait ..."
-    env git clone --depth=1 https://github.com/hi-cli/hi-cli.git "${HI_CLI_HOME}" || {
+    env git clone --depth=1 https://github.com/hi-cli/hi-cli.git "${HI_CLI_HOME}" > /dev/null || {
         printf "Error: git clone of hi-cli repo failed\n"
         exit 1
     }
