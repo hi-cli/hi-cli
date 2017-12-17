@@ -37,7 +37,7 @@ function do_update() {
   log_debug "$PWD"
 
   l_branch=$(git branch | grep "*" | sed "s/* //g")
-  
+  git fetch > /dev/null 2>&1
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
     get_file_from_path running_app_name "$0"
     if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${running_app_name}" != "hi-update" ]; then
@@ -50,7 +50,6 @@ function do_update() {
     fi
     
     log_info "Found new version, updating ..."
-    # git fetch > /dev/null 2>&1
     git branch --set-upstream-to=origin/${l_branch} > /dev/null 2>&1
     git pull --force > /dev/null 2>&1
     result=$?
