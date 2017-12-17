@@ -37,7 +37,7 @@ function do_update() {
   log_debug "$PWD"
 
   l_branch=$(git branch | grep "*" | sed "s/* //g")
-  log_info "Find new version from remote repository, please wait ..."
+  # log_info "Find new version from remote repository, please wait ..."
   git fetch > /dev/null 2>&1
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
     get_file_from_path running_app_name "$0"
@@ -86,7 +86,7 @@ function update_all() {
 
   update_hi_cli
 
-  ls /usr/local/hi-cli/modules | while read package; do
+  ls "${HI_CLI_HOME}/modules" | while read package; do
     update_package $package
   done
 
