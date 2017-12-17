@@ -72,9 +72,10 @@ function update_hi_cli() {
 }
 
 function update_package() {
-  log_info "update hi-cli package $1 ..."
+  package="$1"
+  log_info "update hi-cli package ${package} ..."
 
-  do_update "$1" "${HI_CLI_HOME}/modules/${package}" 
+  do_update "${package}" "${HI_CLI_HOME}/modules/${package}" 
 
   return $?
 }
