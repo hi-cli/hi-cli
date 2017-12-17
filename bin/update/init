@@ -50,8 +50,8 @@ function do_update() {
       exit 0
     fi
 
-    git branch --set-upstream-to=origin/${l_branch}
     log_info "Found new version, updating ..."
+    git branch --set-upstream-to=origin/${l_branch}
     git pull --force
 
   fi
