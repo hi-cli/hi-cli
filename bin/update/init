@@ -45,7 +45,6 @@ function do_update() {
       cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
       chmod 755 /tmp/hi-update
       export hide_version=hide_version
-      export debug=debug
       exec /tmp/hi-update update 
       exit 0
     fi
