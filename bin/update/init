@@ -30,8 +30,8 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function do_update() {
-  l_app_name=$1
-  l_app_dir=$2
+  l_app_name="$1"
+  l_app_dir="$2"
 
   pushd "${l_app_dir}" > /dev/null 2>&1
   log_debug "$PWD"
