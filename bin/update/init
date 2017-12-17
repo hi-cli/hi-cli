@@ -33,11 +33,11 @@ function do_update() {
   l_app_dir=$1
 
   pushd "${l_app_dir}" > /dev/null
-  pwd
+  log_debug "$PWD"
 
   l_branch=$(git branch | grep "*" | sed "s/* //g")
   
-  git fetch
+  git fetch &> /dev/null
   if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
     get_file_from_path l_app_name "$0"
     if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
@@ -50,8 +50,8 @@ function do_update() {
     fi
 
     log_info "Found new version, updating ..."
-    git branch --set-upstream-to=origin/${l_branch}
-    git pull --force
+    git branch --set-upstream-to=origin/${l_branch} &> /dev/null
+    git pull --force &> /dev/null
 
   fi
 
@@ -91,10 +91,10 @@ function update_all() {
 
 function run() {
   cli="hi update"
-
+  
   if [ "${arg2}" == "all" ]; then
     update_all
-  elif [ "${arg2}" != "" ]; then
+  elif [ "${arg2}" != "" ] && [ "${arg2}" != "debug" ]; then
     update_package $arg2
   else
     update_hi_cli
