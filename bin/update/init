@@ -30,42 +30,49 @@ source "${HI_CLI_HOME}/bin/clap"
 source "${HI_CLI_HOME}/bin/logging"
 ###############################################################################
 function do_update() {
-  log_info "Please wait ..."
-  git branch --set-upstream-to=origin/$(git branch | grep "*" | sed "s/* //g")
-  git fetch
-  if (( $(git diff --name-only origin/master | wc -l) > 0 )); then
+  l_app_dir=$1
+
+  pushd "${l_app_dir}" > /dev/null
+  log_debug "$PWD"
+
+  l_branch=$(git branch | grep "*" | sed "s/* //g")
+  
+  git fetch &> /dev/null
+  if (( $(git diff --name-only origin/${l_branch} | wc -l) > 0 )); then
+    get_file_from_path l_app_name "$0"
+    if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
+      log_info "Prepare to update hi-cli ..."
+      cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
+      chmod 755 /tmp/hi-update
+      export hide_version=hide_version
+      exec /tmp/hi-update update 
+      exit 0
+    fi
+
     log_info "Found new version, updating ..."
-    git pull --force
+    git branch --set-upstream-to=origin/${l_branch} &> /dev/null
+    git pull --force &> /dev/null
+
   fi
-}
-
-function update_hi_cli() {
-  log_info "update hi-cli ..."
-
-  pushd "${HI_CLI_HOME}" > /dev/null
-  pwd
-
-  do_update
 
   result=$?
 
   popd > /dev/null
+}
 
-  return $result
+function update_hi_cli() {
+
+  do_update "${HI_CLI_HOME}"
+
+  return $?
 }
 
 function update_package() {
   log_info "update hi-cli package $1 ..."
-  package=$1
-  pushd "${HI_CLI_HOME}/modules/${package}" > /dev/null
-  pwd
-  do_update
 
-  result=$?
+  do_update "${HI_CLI_HOME}/modules/${package}"
 
-  popd > /dev/null
-
-  return $result
+  return $?
 }
 
 
@@ -84,10 +91,10 @@ function update_all() {
 
 function run() {
   cli="hi update"
-
+  
   if [ "${arg2}" == "all" ]; then
     update_all
-  elif [ "${arg2}" != "" ]; then
+  elif [ "${arg2}" != "" ] && [ "${arg2}" != "debug" ]; then
     update_package $arg2
   else
     update_hi_cli

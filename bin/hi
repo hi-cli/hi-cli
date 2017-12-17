@@ -39,6 +39,7 @@ fi
 module_name=$1
 submodule_name=$2
 command_name=$3
+arg0=$0
 arg1=$1
 arg2=$2
 arg3=$3
@@ -96,7 +97,7 @@ source "${HI_CLI_HOME}/bin/logging"
 source "${HI_CLI_HOME}/bin/version"
 source "${HI_CLI_HOME}/bin/usage"
 source "${HI_CLI_HOME}/bin/sys"
-source "${HI_CLI_HOME}/modules/moses/utils/input"
+source "${HI_CLI_HOME}/utils/input"
 
 #log_info "Running: ${CMD_LINE}"
 hi_app="hi"
