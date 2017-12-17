@@ -44,7 +44,7 @@ function do_update() {
     log_info "Found new version, updating ..."
     get_file_from_path l_app_name "$0"
     if [ "${l_app_dir}" == "${HI_CLI_HOME}" ] && [ "${l_app_name}" != "hi-update" ]; then
-      log_info "prepare to update hi-cli ..."
+      log_info "Prepare to update hi-cli ..."
       cp ${HI_CLI_HOME}/bin/hi /tmp/hi-update
       chmod 755 /tmp/hi-update
       export hide_version=hide_version
