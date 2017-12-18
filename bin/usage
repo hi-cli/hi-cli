@@ -29,7 +29,9 @@ function show_hi_usage() {
   ${ECHO_E} "${GRAY}Usages:
   ${hi_app} [man] [do] [something] with [arguments]
 Examples:
-  ${hi_app} package install moses
+  ${hi_app} install cicd
+  ${hi_app} update cicd
+  ${hi_app} cicd deploy new build
 For more information, run: 
   hi help${ENDCOLOR}"
 }
