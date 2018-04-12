@@ -96,11 +96,8 @@ function main() {
     fi
     
     #echo "append ..."
-    if [ "$1" != "" ]; then
-        HI_CLI_HOME=$1
-    else
-        HI_CLI_HOME="/usr/local/hi-cli"
-    fi
+
+    HI_CLI_HOME="/usr/local/hi-cli"
     
     umask g-w,o-w
     printf "${BLUE}Cloning hi-cli...${NORMAL}\n"
@@ -132,12 +129,8 @@ function main() {
     echo ""
     pushd "${HI_CLI_HOME}" > /dev/null
         mkdir -p "${HI_CLI_HOME}/modules"
-
-        HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
-        echo "HI_CLI_BIN: $HI_CLI_BIN"
-        if [ "${HI_CLI_BIN}" == "bin" ]; then
-            HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
-        fi
+        
+        HI_CLI_BIN=${HI_CLI_HOME}/bin
 
         if [ -d /etc/profile.d ]; then
             write_env "/etc/profile.d/hienv.sh"
