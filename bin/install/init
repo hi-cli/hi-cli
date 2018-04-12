@@ -131,12 +131,13 @@ function main() {
     }
     echo ""
     pushd "${HI_CLI_HOME}" > /dev/null
-        HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
-        if [ "${HI_CLI_BIN}" == "bin" ]; then
-        HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
-        fi
-
         mkdir -p "${HI_CLI_HOME}/modules"
+
+        HI_CLI_BIN=$(echo ${HI_CLI_HOME##*\/})
+        echo "HI_CLI_BIN: $HI_CLI_BIN"
+        if [ "${HI_CLI_BIN}" == "bin" ]; then
+            HI_CLI_HOME="${HI_CLI_HOME/\/bin/}"
+        fi
 
         if [ -d /etc/profile.d ]; then
             write_env "/etc/profile.d/hienv.sh"
