@@ -143,10 +143,19 @@ function main() {
         else
             ensure_environment "${profile}"
         fi
-
-        ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
-        ln -sf "${HI_CLI_HOME}/bin/hi-all" "/usr/local/bin/hi-all"
-        ln -sf "${HI_CLI_HOME}/bin/hpm" "/usr/local/bin/hpm"
+        if [ "echo $(uname) | grep MSYS" != "" ]; then
+            if [ -d "/c/msys64" ]; then
+                cmd /c 'mklink c:\msys64\usr\bin\hi c:\msys64\usr\local\hi-cli\bin\hi'
+                cmd /c 'mklink c:\msys64\usr\bin\hi-all c:\msys64\usr\local\hi-cli\bin\hi-all'
+            elif [ -d "/c/Git" ]; then
+                cmd /c 'mklink c:\Git\usr\bin\hi c:\Git\usr\local\hi-cli\bin\hi'
+                cmd /c 'mklink c:\Git\usr\bin\hi-all c:\Git\usr\local\hi-cli\bin\hi-all'
+            fi
+        else
+            ln -sf "${HI_CLI_HOME}/bin/hi" "/usr/local/bin/hi"
+            ln -sf "${HI_CLI_HOME}/bin/hi-all" "/usr/local/bin/hi-all"
+            ln -sf "${HI_CLI_HOME}/bin/hpm" "/usr/local/bin/hpm"
+        fi
 
         printf "${BLUE}Installed hi-cli successfully!\n${NORMAL}"
     popd > /dev/null
