@@ -41,11 +41,11 @@ hi update
 
 ### Install hi-cli package [cicd](https://github.com/hi-cli/hi-cicd)
 ```bash
-hi package install cicd
+hi install cicd
 ```
 
 ### Update hi-cli package [cicd](https://github.com/hi-cli/hi-cicd)
 ```bash
-hi package update cicd
+hi update cicd
 ```
 (for more available packages, please find out [here](https://github.com/hi-cli?tab=repositories))
