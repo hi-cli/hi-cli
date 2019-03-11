@@ -36,17 +36,17 @@ mm           ##                         mmmm         ##
 ##    ##  mmm##mmm            "##mmmm#    ##mmm   mmm##mmm
 ""    ""  """"""""              """""      """"   """"""""
 _EOF_
-
-${ECHO_E} "${DARKGREEN}${info}
+    
+    ${ECHO_E} "${DARKGREEN}${info}
 ${DARKBLUE}Version: $HI_CLI_VERSION Author: John Deng Email: john.deng@outlook.com${ENDCOLOR}
-"
+    "
 }
 
 function show_version()
 {
-    export HI_CLI_VERSION='1.1.4'
-    export HI_CLI_UPDATED_DATE='2017-12-17'
-
+    export HI_CLI_VERSION='1.1.5'
+    export HI_CLI_UPDATED_DATE='2019-03-10'
+    
     show_app_info
 }
 
